@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #111111;
+  --amber: #C8873A;
+  --amber-light: #E5A355;
+  --amber-pale: #F5E6D3;
+  --stone: #F8F6F3;
+  --mist: #F2EFE9;
+  --smoke: #6B6560;
+  --ash: #9E9890;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: #ffffff;
+  color: var(--ink);
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+/* Editorial heading style */
+.editorial {
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+
+/* Amber underline accent */
+.amber-underline {
+  text-decoration: underline;
+  text-decoration-color: var(--amber);
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+}
+
+/* Staggered animation helpers */
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+.animate-delay-400 { animation-delay: 400ms; }
+.animate-delay-500 { animation-delay: 500ms; }
+
+/* Opacity 0 until animated */
+.will-animate {
+  opacity: 0;
+}
+
+/* Razorpay button override */
+.razorpay-payment-button {
+  display: none !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--stone); }
+::-webkit-scrollbar-thumb { background: var(--ash); border-radius: 3px; }

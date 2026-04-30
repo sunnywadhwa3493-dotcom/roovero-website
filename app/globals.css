@@ -2,20 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── CSS Custom Properties ─────────────────────────────────── */
 :root {
-  --ink: #111111;
-  --amber: #C8873A;
+  --ink:        #111111;
+  --amber:      #C8873A;
   --amber-light: #E5A355;
   --amber-pale: #F5E6D3;
-  --stone: #F8F6F3;
-  --mist: #F2EFE9;
-  --smoke: #6B6560;
-  --ash: #9E9890;
+  --stone:      #F8F6F3;
+  --mist:       #F2EFE9;
+  --smoke:      #6B6560;
+  --ash:        #9E9890;
+
+  --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-* {
-  box-sizing: border-box;
-}
+/* ─── Base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
 
 html {
   scroll-behavior: smooth;
@@ -26,16 +29,15 @@ html {
 body {
   background: #ffffff;
   color: var(--ink);
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: 'Figtree', system-ui, -apple-system, sans-serif;
 }
 
-/* Editorial heading style */
+/* ─── Typography utilities ───────────────────────────────────── */
 .editorial {
   font-family: Georgia, serif;
   font-style: italic;
 }
 
-/* Amber underline accent */
 .amber-underline {
   text-decoration: underline;
   text-decoration-color: var(--amber);
@@ -43,24 +45,114 @@ body {
   text-decoration-thickness: 2px;
 }
 
-/* Staggered animation helpers */
-.animate-delay-100 { animation-delay: 100ms; }
-.animate-delay-200 { animation-delay: 200ms; }
-.animate-delay-300 { animation-delay: 300ms; }
-.animate-delay-400 { animation-delay: 400ms; }
-.animate-delay-500 { animation-delay: 500ms; }
+/* ─── Load animations (hero entrance) ───────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
 
-/* Opacity 0 until animated */
-.will-animate {
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-up  { animation: fadeUp  0.7s var(--ease-out-quart) both; }
+.animate-fade-in  { animation: fadeIn  0.5s var(--ease-out-quart) both; }
+
+/* Stagger delays */
+.delay-0   { animation-delay: 0ms;   }
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+
+/* ─── Hero post cycling (3-post stack, 9s total) ────────────── */
+@keyframes heroCycle1 {
+  0%, 26%  { opacity: 1; transform: translateY(0)    scale(1);    }
+  32%, 95% { opacity: 0; transform: translateY(-14px) scale(0.97); }
+  100%     { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+@keyframes heroCycle2 {
+  0%, 28%  { opacity: 0; transform: translateY(14px)  scale(0.97); }
+  34%, 59% { opacity: 1; transform: translateY(0)     scale(1);    }
+  65%, 100%{ opacity: 0; transform: translateY(-14px) scale(0.97); }
+}
+
+@keyframes heroCycle3 {
+  0%, 61%  { opacity: 0; transform: translateY(14px) scale(0.97); }
+  67%, 94% { opacity: 1; transform: translateY(0)    scale(1);    }
+  100%     { opacity: 0; transform: translateY(14px) scale(0.97); }
+}
+
+.cycle-1 { animation: heroCycle1 9s var(--ease-in-out-quart) infinite; }
+.cycle-2 { animation: heroCycle2 9s var(--ease-in-out-quart) infinite; }
+.cycle-3 { animation: heroCycle3 9s var(--ease-in-out-quart) infinite; }
+
+/* ─── Marquee strip ──────────────────────────────────────────── */
+@keyframes marqueeScroll {
+  from { transform: translateX(0);    }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 30s linear infinite;
+}
+
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ─── Floating accent ────────────────────────────────────────── */
+@keyframes floatY {
+  0%, 100% { transform: translateY(0px);  }
+  50%      { transform: translateY(-6px); }
+}
+.float-subtle { animation: floatY 4s ease-in-out infinite; }
+
+/* ─── Live status pulse ──────────────────────────────────────── */
+@keyframes pulseSoft {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+.status-live { animation: pulseSoft 2s ease-in-out infinite; }
+
+/* ─── Scroll-reveal (set by AnimateIn component) ─────────────── */
+.reveal-ready {
   opacity: 0;
+  transform: translateY(24px);
 }
 
-/* Razorpay button override */
-.razorpay-payment-button {
-  display: none !important;
+/* ─── Diamond wordmark accent ────────────────────────────────── */
+.diamond-accent {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--amber);
+  transform: rotate(45deg);
+  transition: transform 0.3s var(--ease-out-quart);
+  flex-shrink: 0;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--stone); }
-::-webkit-scrollbar-thumb { background: var(--ash); border-radius: 3px; }
+a:hover .diamond-accent,
+button:hover .diamond-accent {
+  transform: rotate(90deg);
+}
+
+/* ─── Amber rule (horizontal accent line) ───────────────────── */
+.amber-rule {
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: var(--amber);
+}
+
+/* ─── Razorpay button override ───────────────────────────────── */
+.razorpay-payment-button { display: none !important; }
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; }
+::-webkit-scrollbar-track  { background: var(--stone); }
+::-webkit-scrollbar-thumb  { background: var(--ash); border-radius: 2px; }

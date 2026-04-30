@@ -20,7 +20,7 @@ module.exports = {
       },
       fontFamily: {
         serif: ['Georgia', 'Times New Roman', 'serif'],
-        sans: ['system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Figtree', 'system-ui', '-apple-system', 'sans-serif'],
       },
       fontSize: {
         'display': ['5rem', { lineHeight: '1.05', letterSpacing: '-0.03em' }],

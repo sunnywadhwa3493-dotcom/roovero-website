@@ -1,5 +1,6 @@
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
+import AnimateIn from '@/components/AnimateIn'
 import Link from 'next/link'
 
 export default function AboutPage() {
@@ -21,6 +22,7 @@ export default function AboutPage() {
             </h1>
 
             {/* Story */}
+            <AnimateIn delay={80}>
             <div className="prose-roovero space-y-6 text-ink font-sans leading-relaxed">
               <p className="text-xl text-smoke leading-relaxed font-serif italic">
                 Roovero comes from <em>rovere</em> — the Italian word for oak. We named the company after it because of what oaks represent: they grow slowly, root deeply, and endure for centuries.
@@ -38,7 +40,8 @@ export default function AboutPage() {
                 Roovero was built to fix that. We give Indian cafés, restaurants, salons, and D2C brands the social media presence they deserve — without requiring them to become content creators.
               </p>
 
-              <div className="border-l-2 border-amber pl-6 my-10">
+              <div className="my-10 py-8 border-t border-b border-mist">
+                <span className="amber-rule block mb-5" />
                 <p className="text-xl font-serif italic text-ink">
                   "The bottleneck is never ideas. It's the operational follow-through —
                   the approvals, the edits, the 11pm post that never went out."
@@ -50,7 +53,10 @@ export default function AboutPage() {
               </p>
             </div>
 
+            </AnimateIn>
+
             {/* Founder */}
+            <AnimateIn delay={100}>
             <div className="mt-16 pt-16 border-t border-mist">
               <span className="text-xs tracking-widest text-smoke uppercase font-sans">Built by</span>
               <div className="flex items-center gap-5 mt-6">
@@ -67,7 +73,10 @@ export default function AboutPage() {
               </p>
             </div>
 
+            </AnimateIn>
+
             {/* CTA */}
+            <AnimateIn delay={80}>
             <div className="mt-16 pt-16 border-t border-mist">
               <Link
                 href="/pricing"
@@ -76,6 +85,7 @@ export default function AboutPage() {
                 Start your brand's story →
               </Link>
             </div>
+            </AnimateIn>
           </div>
         </section>
       </main>

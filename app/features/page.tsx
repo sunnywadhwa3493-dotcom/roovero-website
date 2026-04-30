@@ -1,5 +1,6 @@
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
+import AnimateIn from '@/components/AnimateIn'
 import Link from 'next/link'
 
 const features = [
@@ -113,16 +114,15 @@ export default function FeaturesPage() {
           <div className="max-w-content mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-mist">
               {features.map((feature, i) => (
-                <div
+                <AnimateIn
                   key={feature.id}
+                  delay={(i % 2) * 100}
                   className={[
                     'bg-white p-10',
                     i % 2 === 0 && i < features.length - 1 ? 'md:border-r border-mist' : '',
                     i < features.length - 2 ? 'border-b border-mist' : '',
                     i === features.length - 1 && features.length % 2 !== 0 ? 'md:col-span-2' : '',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')}
+                  ].filter(Boolean).join(' ')}
                 >
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-8 h-8 border border-amber/30 flex items-center justify-center flex-shrink-0">
@@ -144,7 +144,7 @@ export default function FeaturesPage() {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </AnimateIn>
               ))}
             </div>
           </div>

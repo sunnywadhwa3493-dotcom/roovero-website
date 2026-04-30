@@ -2,12 +2,15 @@
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Suspense, useEffect, useState } from 'react'
-import { getPlanById, normalizePlanId, type PlanId } from '@/lib/plans'
+import { getAddOnById, getPlanById, normalizePlanId, type PlanId } from '@/lib/plans'
 
 function SuccessContent() {
   const searchParams = useSearchParams()
   const rawPlan = searchParams.get('plan') ?? ''
+  const isAddon = searchParams.get('type') === 'addon'
+  const addonId = searchParams.get('addon') ?? ''
   const plan = getPlanById(normalizePlanId(rawPlan) as PlanId)
+  const addOn = getAddOnById(addonId as any)
   const [countdown, setCountdown] = useState(8)
 
   useEffect(() => {
@@ -40,22 +43,33 @@ function SuccessContent() {
         </div>
 
         <h1 className="text-3xl font-serif italic text-ink mb-3">
-          Welcome to {plan?.name ?? 'Roovero'}
+          {isAddon
+            ? `${addOn?.name ?? 'Add-on'} is ready`
+            : `Welcome to ${plan?.name ?? 'Roovero'}`}
         </h1>
         <p className="text-smoke font-sans mb-8 leading-relaxed">
-          Your subscription is active. Your brand's true voice is ready. Return to the app to get started.
+          {isAddon
+            ? 'Your purchase has been captured. Return to the app and refresh billing to see the add-on reflected in this month’s entitlements.'
+            : 'Your subscription is active. Your operating system for content is ready. Return to the app to get started.'}
         </p>
 
         {/* What happens next */}
         <div className="bg-white border border-mist p-6 text-left mb-8">
           <p className="text-xs tracking-widest text-smoke uppercase font-sans mb-4">What happens next</p>
           <ul className="space-y-3">
-            {[
-              'Your plan is now active in the app',
-              'Complete your brand profile setup',
-              'AI generates your first content calendar',
-              'Review and approve your first posts',
-            ].map((step, i) => (
+            {(isAddon
+              ? [
+                  'The purchase is verified by Razorpay webhook',
+                  'Roovero writes the add-on into your fulfillment ledger',
+                  'Your current month limits increase immediately after refresh',
+                  'Return to billing or the locked feature and continue',
+                ]
+              : [
+                  'Your plan is now active in the app',
+                  'Complete your brand profile setup',
+                  'AI generates your first content calendar',
+                  'Review and approve your first posts',
+                ]).map((step, i) => (
               <li key={i} className="flex items-start gap-2.5 text-sm text-ink font-sans">
                 <span className="text-amber flex-shrink-0 mt-0.5">{i + 1}.</span>
                 {step}

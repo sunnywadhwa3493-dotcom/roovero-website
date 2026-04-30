@@ -2,6 +2,7 @@
 import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import {
+  getAddOnById,
   GST_DISPLAY_RULE,
   getPlanById,
   inclusiveGstPortion,
@@ -29,6 +30,7 @@ function SubscribeContent() {
 
   const planId = normalizePlanId(rawPlan) as PlanId
   const plan = getPlanById(planId)
+  const addOn = getAddOnById(addonId as any)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -50,6 +52,10 @@ function SubscribeContent() {
       setError('Invalid plan selected.')
       return
     }
+    if (isAddon && !addOn) {
+      setError('Invalid add-on selected.')
+      return
+    }
     if (!scriptLoaded) {
       setError('Payment system loading. Please wait a moment.')
       return
@@ -67,20 +73,45 @@ function SubscribeContent() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create subscription')
 
-      const rzp = new window.Razorpay({
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        subscription_id: data.subscriptionId,
-        name: 'Roovero',
-        description: `${plan?.name ?? addonId} subscription`,
-        image: 'https://roovero.com/logo.png',
-        prefill: { name: '', email: '', contact: '' },
-        notes: { uid, clientId, planId: planId ?? addonId },
-        theme: { color: '#C8873A' },
-        modal: { ondismiss: () => setLoading(false) },
-        handler: function () {
-          window.location.href = `/success?plan=${planId}&uid=${uid}`
-        },
-      })
+      const checkoutOptions =
+        data.mode === 'order'
+          ? {
+              key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+              order_id: data.orderId,
+              amount: data.amount,
+              currency: data.currency ?? 'INR',
+              name: 'Roovero',
+              description: `${addOn?.name ?? addonId} purchase`,
+              image: 'https://roovero.com/logo.png',
+              prefill: { name: '', email: '', contact: '' },
+              notes: { uid, clientId, addOnId: addOn?.id ?? addonId },
+              theme: { color: '#C8873A' },
+              modal: { ondismiss: () => setLoading(false) },
+              handler: function () {
+                window.location.href = `/success?type=addon&addon=${encodeURIComponent(addOn?.id ?? addonId)}&uid=${encodeURIComponent(uid)}`
+              },
+            }
+          : {
+              key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+              subscription_id: data.subscriptionId,
+              name: 'Roovero',
+              description: `${plan?.name ?? addOn?.name ?? addonId} subscription`,
+              image: 'https://roovero.com/logo.png',
+              prefill: { name: '', email: '', contact: '' },
+              notes: isAddon
+                ? { uid, clientId, addOnId: addOn?.id ?? addonId }
+                : { uid, clientId, planId },
+              theme: { color: '#C8873A' },
+              modal: { ondismiss: () => setLoading(false) },
+              handler: function () {
+                const successParams = isAddon
+                  ? `type=addon&addon=${encodeURIComponent(addOn?.id ?? addonId)}&uid=${encodeURIComponent(uid)}`
+                  : `plan=${planId}&uid=${encodeURIComponent(uid)}`
+                window.location.href = `/success?${successParams}`
+              },
+            }
+
+      const rzp = new window.Razorpay(checkoutOptions)
       rzp.open()
     } catch (err: any) {
       setError(err.message ?? 'Something went wrong. Please try again.')
@@ -108,6 +139,17 @@ function SubscribeContent() {
         <div className="max-w-md text-center">
           <h1 className="text-xl font-serif italic text-ink mb-2">Plan not found</h1>
           <p className="text-smoke text-sm">Unknown plan: {rawPlan}. Please return to the app.</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (isAddon && !addOn) {
+    return (
+      <div className="min-h-screen bg-stone flex items-center justify-center p-6">
+        <div className="max-w-md text-center">
+          <h1 className="text-xl font-serif italic text-ink mb-2">Add-on not found</h1>
+          <p className="text-smoke text-sm">Unknown add-on: {addonId}. Please return to the app.</p>
         </div>
       </div>
     )
@@ -174,10 +216,44 @@ function SubscribeContent() {
               </div>
             </>
           ) : (
-            <div className="text-center">
-              <h1 className="text-xl font-serif italic text-ink mb-2">Add-on: {addonId}</h1>
-              <p className="text-smoke text-sm">One-time purchase</p>
-            </div>
+            <>
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <h1 className="text-2xl font-serif italic text-ink">{addOn?.name ?? addonId}</h1>
+                  <p className="text-smoke text-sm mt-1">
+                    {addOn?.kind === 'recurring'
+                      ? 'Recurring add-on billed monthly with your Roovero stack'
+                      : 'One-time add-on purchase fulfilled into your current billing month'}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-serif italic text-ink">
+                    ₹{(addOn?.price ?? 0).toLocaleString('en-IN')}
+                  </div>
+                  <div className="text-xs text-smoke">
+                    {addOn?.kind === 'recurring' ? 'per month, GST included' : 'one-time, GST included'}
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-stone border border-mist px-4 py-3 mb-5">
+                <div className="text-xs text-smoke uppercase tracking-widest mb-2 font-sans">Commercial summary</div>
+                <div className="grid grid-cols-1 gap-y-2 text-sm text-ink font-sans">
+                  <span>{addOn?.unlocks}</span>
+                  <span>Eligibility: {addOn?.eligibility}</span>
+                  <span>Billing: {addOn?.kind === 'recurring' ? 'Monthly recurring add-on' : 'One-time purchase'}</span>
+                </div>
+                {addOn && (
+                  <div className="text-xs text-smoke font-sans mt-3">
+                    GST portion inside this price: ₹
+                    {inclusiveGstPortion(addOn.price).toLocaleString('en-IN', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </div>
+                )}
+              </div>
+            </>
           )}
         </div>
 
@@ -210,7 +286,7 @@ function SubscribeContent() {
               Opening payment...
             </span>
           ) : (
-            `Subscribe to ${plan?.name ?? 'Add-on'} →`
+            `${plan != null ? `Subscribe to ${plan.name}` : `Buy ${addOn?.name ?? 'add-on'}`} →`
           )}
         </button>
 

@@ -318,6 +318,8 @@ export const RECURRING_RAZORPAY_ITEMS = [
 
 export const getPlanById = (id: PlanId): Plan | undefined =>
   PLANS.find((p) => p.id === id)
+export const getAddOnById = (id: AddOnId): AddOn | undefined =>
+  ADD_ONS.find((addOn) => addOn.id === id)
 
 export const getPaidPlans = () => PLANS.filter((plan) => plan.id !== 'free')
 export const getAddOnsByKind = (kind: AddOn['kind']) =>

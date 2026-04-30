@@ -1,0 +1,58 @@
+[
+  {
+    "id": "starter",
+    "envKey": "RAZORPAY_PLAN_STARTER_ID",
+    "name": "Roovero Starter",
+    "description": "30 posts/mo with 1 reel and 3 carousels",
+    "amountInr": 1999
+  },
+  {
+    "id": "core",
+    "envKey": "RAZORPAY_PLAN_CORE_ID",
+    "name": "Roovero Core",
+    "description": "30 posts/mo with Meta publishing and analytics",
+    "amountInr": 4999
+  },
+  {
+    "id": "growth",
+    "envKey": "RAZORPAY_PLAN_GROWTH_ID",
+    "name": "Roovero Growth",
+    "description": "30 posts/mo with more reels, AI replies, and competitor coverage",
+    "amountInr": 8999
+  },
+  {
+    "id": "studio",
+    "envKey": "RAZORPAY_PLAN_STUDIO_ID",
+    "name": "Roovero Studio",
+    "description": "60 posts/mo with priority queue and deeper coverage",
+    "amountInr": 14999
+  },
+  {
+    "id": "ADDON_REEL_PACK_5",
+    "envKey": "RAZORPAY_ADDON_REEL_PACK_5_ID",
+    "name": "Roovero Add-on: +5 Reel Credits",
+    "description": "Recurring add-on for 5 extra reel credits",
+    "amountInr": 1499
+  },
+  {
+    "id": "ADDON_CAROUSEL_PACK_5",
+    "envKey": "RAZORPAY_ADDON_CAROUSEL_PACK_5_ID",
+    "name": "Roovero Add-on: +5 Carousel Credits",
+    "description": "Recurring add-on for 5 extra carousel credits",
+    "amountInr": 799
+  },
+  {
+    "id": "ADDON_EDIT_PACK_20",
+    "envKey": "RAZORPAY_ADDON_EDIT_PACK_20_ID",
+    "name": "Roovero Add-on: +20 Edit Credits",
+    "description": "Recurring add-on for 20 extra AI image edits",
+    "amountInr": 499
+  },
+  {
+    "id": "ADDON_BRAND_PHOTO_PACK",
+    "envKey": "RAZORPAY_ADDON_BRAND_PHOTO_PACK_ID",
+    "name": "Roovero Add-on: +10 Brand Photo Uses",
+    "description": "Recurring add-on for 10 extra brand-reference generations",
+    "amountInr": 599
+  }
+]

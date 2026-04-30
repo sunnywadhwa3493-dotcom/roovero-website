@@ -1,7 +1,13 @@
 'use client'
 import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { PLANS, normalizePlanId, getPlanById, type PlanId } from '@/lib/plans'
+import {
+  GST_DISPLAY_RULE,
+  getPlanById,
+  inclusiveGstPortion,
+  normalizePlanId,
+  type PlanId,
+} from '@/lib/plans'
 
 declare global {
   interface Window {
@@ -15,7 +21,6 @@ function SubscribeContent() {
   const [error, setError] = useState<string | null>(null)
   const [scriptLoaded, setScriptLoaded] = useState(false)
 
-  // Read params from Flutter app redirect
   const rawPlan = searchParams.get('plan') ?? ''
   const uid = searchParams.get('uid') ?? ''
   const clientId = searchParams.get('clientId') ?? ''
@@ -25,14 +30,15 @@ function SubscribeContent() {
   const planId = normalizePlanId(rawPlan) as PlanId
   const plan = getPlanById(planId)
 
-  // Load Razorpay script
   useEffect(() => {
     if (typeof window === 'undefined') return
     const script = document.createElement('script')
     script.src = 'https://checkout.razorpay.com/v1/checkout.js'
     script.onload = () => setScriptLoaded(true)
     document.body.appendChild(script)
-    return () => { document.body.removeChild(script) }
+    return () => {
+      document.body.removeChild(script)
+    }
   }, [])
 
   const handleSubscribe = async () => {
@@ -53,7 +59,6 @@ function SubscribeContent() {
     setError(null)
 
     try {
-      // Create Razorpay subscription via our API route
       const res = await fetch('/api/create-subscription', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -62,20 +67,17 @@ function SubscribeContent() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create subscription')
 
-      // Open Razorpay checkout
       const rzp = new window.Razorpay({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         subscription_id: data.subscriptionId,
         name: 'Roovero',
-        description: `${plan?.name ?? addonId} Plan`,
+        description: `${plan?.name ?? addonId} subscription`,
         image: 'https://roovero.com/logo.png',
         prefill: { name: '', email: '', contact: '' },
         notes: { uid, clientId, planId: planId ?? addonId },
         theme: { color: '#C8873A' },
         modal: { ondismiss: () => setLoading(false) },
         handler: function () {
-          // Payment captured — webhook will update Firestore
-          // Redirect to success page
           window.location.href = `/success?plan=${planId}&uid=${uid}`
         },
       })
@@ -86,7 +88,6 @@ function SubscribeContent() {
     }
   }
 
-  // Validate required params
   if (!uid || !clientId) {
     return (
       <div className="min-h-screen bg-stone flex items-center justify-center p-6">
@@ -115,7 +116,6 @@ function SubscribeContent() {
   return (
     <div className="min-h-screen bg-stone flex items-center justify-center p-6">
       <div className="w-full max-w-md">
-        {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-6">
             <span className="text-2xl font-serif italic text-ink">Roovero</span>
@@ -124,7 +124,6 @@ function SubscribeContent() {
           <p className="text-smoke text-sm">Complete your subscription</p>
         </div>
 
-        {/* Plan card */}
         <div className="bg-white border border-mist rounded-none p-8 mb-6">
           {plan ? (
             <>
@@ -135,19 +134,40 @@ function SubscribeContent() {
                 </div>
                 <div className="text-right">
                   <div className="text-3xl font-serif italic text-ink">
-                    ₹{plan.price.toLocaleString('en-IN')}
+                    ₹{plan.monthlyPrice.toLocaleString('en-IN')}
                   </div>
-                  <div className="text-xs text-smoke">per month</div>
+                  <div className="text-xs text-smoke">per month, GST included</div>
                 </div>
+              </div>
+
+              <div className="bg-stone border border-mist px-4 py-3 mb-5">
+                <div className="text-xs text-smoke uppercase tracking-widest mb-2 font-sans">Commercial summary</div>
+                <div className="grid grid-cols-2 gap-y-2 text-sm text-ink font-sans">
+                  <span>{plan.postsPerMonth} posts per month</span>
+                  <span>{plan.staticsPerMonth} statics</span>
+                  <span>{plan.carouselCredits} carousels</span>
+                  <span>{plan.reelCredits} reels</span>
+                  <span>{plan.reelMaxSeconds > 0 ? `${plan.reelMaxSeconds}s reel max` : 'No reels'}</span>
+                  <span>{plan.avatarLabel}</span>
+                </div>
+                {plan.monthlyPrice > 0 && (
+                  <div className="text-xs text-smoke font-sans mt-3">
+                    GST portion inside this price: ₹
+                    {inclusiveGstPortion(plan.monthlyPrice).toLocaleString('en-IN', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </div>
+                )}
               </div>
 
               <div className="border-t border-mist pt-5">
                 <p className="text-xs text-smoke uppercase tracking-widest mb-3 font-sans">What's included</p>
                 <ul className="space-y-2.5">
-                  {plan.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-sm text-ink">
+                  {plan.features.map((feature, index) => (
+                    <li key={index} className="flex items-start gap-2.5 text-sm text-ink">
                       <span className="text-amber mt-0.5 flex-shrink-0">✓</span>
-                      <span>{f}</span>
+                      <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -161,7 +181,6 @@ function SubscribeContent() {
           )}
         </div>
 
-        {/* Trust signals */}
         <div className="flex items-center justify-center gap-6 mb-6 text-xs text-smoke">
           <span className="flex items-center gap-1.5">
             <span className="text-amber">🔒</span> Secured by Razorpay
@@ -174,14 +193,12 @@ function SubscribeContent() {
           </span>
         </div>
 
-        {/* Error */}
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 mb-4">
             {error}
           </div>
         )}
 
-        {/* CTA */}
         <button
           onClick={handleSubscribe}
           disabled={loading || !scriptLoaded}
@@ -201,7 +218,7 @@ function SubscribeContent() {
           By subscribing, you agree to our{' '}
           <a href="/terms" className="underline hover:text-ink">Terms</a> and{' '}
           <a href="/privacy" className="underline hover:text-ink">Privacy Policy</a>.
-          Billed monthly. Cancel anytime from the app.
+          Billed monthly. Prices are GST {GST_DISPLAY_RULE}. Cancel anytime from the app.
         </p>
       </div>
     </div>
@@ -210,11 +227,13 @@ function SubscribeContent() {
 
 export default function SubscribePage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-stone flex items-center justify-center">
-        <div className="w-6 h-6 border-2 border-ink/20 border-t-ink rounded-full animate-spin" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-stone flex items-center justify-center">
+          <div className="w-6 h-6 border-2 border-ink/20 border-t-ink rounded-full animate-spin" />
+        </div>
+      }
+    >
       <SubscribeContent />
     </Suspense>
   )

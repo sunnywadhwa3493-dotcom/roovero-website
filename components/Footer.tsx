@@ -12,7 +12,7 @@ export default function Footer() {
               <span className="w-1.5 h-1.5 rounded-full bg-amber" />
             </div>
             <p className="text-sm leading-relaxed max-w-xs">
-              Your brand's true voice. AI-powered social media automation built for Indian SMBs — cafés, restaurants, salons, and D2C brands.
+              Content operations for Indian SMBs. Generation, approval, editing, and publishing — in one system, without the agency overhead.
             </p>
             <p className="text-xs text-white/40 mt-4 font-serif italic">
               From <em>rovere</em> — the oak. Deeply rooted. Built to last.

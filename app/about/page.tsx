@@ -40,7 +40,8 @@ export default function AboutPage() {
 
               <div className="border-l-2 border-amber pl-6 my-10">
                 <p className="text-xl font-serif italic text-ink">
-                  "Your brand's true voice. We help yours find it."
+                  "The bottleneck is never ideas. It's the operational follow-through —
+                  the approvals, the edits, the 11pm post that never went out."
                 </p>
               </div>
 

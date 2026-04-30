@@ -23,10 +23,8 @@ export async function POST(req: NextRequest) {
     }
 
     if (isAddon) {
-      // Add-on: create a one-time Razorpay order instead of subscription
-      // Amount should be looked up from addon config
       return NextResponse.json(
-        { error: 'Add-on payments coming soon' },
+        { error: 'Add-on checkout is being split between recurring subscription plans and one-time payments. This route is plan-only for now.' },
         { status: 501 }
       )
     }

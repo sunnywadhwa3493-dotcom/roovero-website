@@ -17,23 +17,47 @@ export default function PricingPage() {
         {/* ══════════════════════════ HERO ══ */}
         <section className="bg-ink py-24 px-6">
           <div className="max-w-content mx-auto">
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-3 mb-8">
-                <span className="amber-rule" />
-                <span className="text-[11px] tracking-widest text-white/40 uppercase font-sans">Pricing</span>
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 items-end">
+              <div className="max-w-3xl">
+                <div className="flex items-center gap-3 mb-8">
+                  <span className="amber-rule" />
+                  <span className="text-[11px] tracking-widest text-white/40 uppercase font-sans">Pricing</span>
+                </div>
+                <h1
+                  className="font-serif italic text-white mb-6 animate-fade-up"
+                  style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', letterSpacing: '-0.03em' }}
+                >
+                  Quiet pricing.<br />
+                  <span style={{ color: 'var(--amber)' }}>Clear tradeoffs.</span>
+                </h1>
+                <p className="text-white/55 font-sans text-lg leading-relaxed max-w-2xl animate-fade-up delay-100">
+                  Every plan is priced in INR with GST included. Starter proves the output. Core is
+                  the first fully operational Roovero plan. Growth and Studio expand video,
+                  engagement, and publishing depth.
+                </p>
               </div>
-              <h1
-                className="font-serif italic text-white mb-6 animate-fade-up"
-                style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', letterSpacing: '-0.03em' }}
-              >
-                Quiet pricing.<br />
-                <span style={{ color: 'var(--amber)' }}>Clear tradeoffs.</span>
-              </h1>
-              <p className="text-white/55 font-sans text-lg leading-relaxed max-w-2xl animate-fade-up delay-100">
-                Every plan is priced in INR with GST included. Starter proves the output. Core is
-                the first fully operational Roovero plan. Growth and Studio expand video,
-                engagement, and publishing depth.
-              </p>
+
+              <div className="border border-white/10 bg-white/5 backdrop-blur-sm p-6 animate-fade-in delay-200">
+                <div className="text-[10px] uppercase tracking-widest text-white/35 font-sans mb-4">
+                  Buying pattern
+                </div>
+                <div className="space-y-4">
+                  {[
+                    ['Starter', 'prove output quality'],
+                    ['Core', 'connect publishing + analytics'],
+                    ['Growth', 'push reels + replies harder'],
+                    ['Studio', 'run high-volume content ops'],
+                  ].map(([tier, note], i) => (
+                    <div key={tier} className={`flex items-start justify-between gap-4 pb-4 ${i < 3 ? 'border-b border-white/8' : ''}`}>
+                      <div>
+                        <div className="font-serif italic text-white text-lg">{tier}</div>
+                        <div className="text-white/45 text-xs font-sans mt-1">{note}</div>
+                      </div>
+                      <span className="w-2 h-2 rounded-full bg-amber mt-2" />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -48,9 +72,10 @@ export default function PricingPage() {
                   <div
                     key={plan.id}
                     className={[
-                      'relative flex flex-col',
+                      'pricing-tier-card relative flex flex-col',
                       i < PLANS.length - 1 ? 'border-b xl:border-b-0 xl:border-r border-mist' : '',
                       plan.highlighted ? 'bg-ink text-white' : 'bg-white',
+                      plan.highlighted ? 'pricing-tier-card-dark' : '',
                       plan.highlighted ? 'py-10 px-8' : 'p-8',
                     ].filter(Boolean).join(' ')}
                   >

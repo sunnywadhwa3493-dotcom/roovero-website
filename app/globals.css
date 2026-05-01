@@ -91,6 +91,24 @@ body {
 .cycle-2 { animation: heroCycle2 9s var(--ease-in-out-quart) infinite; }
 .cycle-3 { animation: heroCycle3 9s var(--ease-in-out-quart) infinite; }
 
+@keyframes heroStackFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-8px); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.03); }
+}
+
+.hero-stack-shell {
+  animation: heroStackFloat 5.5s ease-in-out infinite;
+}
+
+.hero-glow {
+  animation: glowPulse 6s ease-in-out infinite;
+}
+
 /* ─── Marquee strip ──────────────────────────────────────────── */
 @keyframes marqueeScroll {
   from { transform: translateX(0);    }
@@ -147,6 +165,45 @@ button:hover .diamond-accent {
   width: 32px;
   height: 2px;
   background: var(--amber);
+}
+
+.sample-rail-card {
+  transition:
+    transform 0.45s var(--ease-out-quart),
+    border-color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.45s var(--ease-out-quart);
+}
+
+.sample-rail-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255,255,255,0.2);
+  box-shadow: 0 28px 80px rgba(0,0,0,0.32);
+}
+
+.sample-rail-card img {
+  transition: transform 0.8s var(--ease-out-quart);
+}
+
+.sample-rail-card:hover img {
+  transform: scale(1.04);
+}
+
+.pricing-tier-card {
+  transition:
+    transform 0.4s var(--ease-out-quart),
+    box-shadow 0.4s var(--ease-out-quart),
+    border-color 0.35s ease,
+    background 0.35s ease;
+}
+
+.pricing-tier-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 28px 90px rgba(17, 17, 17, 0.12);
+}
+
+.pricing-tier-card.pricing-tier-card-dark:hover {
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.34);
 }
 
 /* ─── Razorpay button override ───────────────────────────────── */

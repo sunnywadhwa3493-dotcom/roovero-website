@@ -274,8 +274,12 @@ export default function HomePage() {
 
           {/* Ambient amber glow (top right) */}
           <div
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 pointer-events-none hero-glow"
             style={{ background: 'radial-gradient(ellipse 55% 60% at 78% 40%, rgba(200,135,58,0.09) 0%, transparent 65%)' }}
+          />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse 38% 42% at 22% 72%, rgba(255,255,255,0.045) 0%, transparent 72%)' }}
           />
           {/* Subtle grid texture */}
           <div
@@ -287,7 +291,7 @@ export default function HomePage() {
           />
 
           <div className="max-w-content mx-auto px-6 py-24 w-full relative">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-16 xl:gap-24 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_430px] gap-16 xl:gap-24 items-center">
 
               {/* Left: Text */}
               <div>
@@ -344,7 +348,20 @@ export default function HomePage() {
 
               {/* Right: cycling post stack */}
               <div className="hidden lg:block relative animate-fade-in delay-500">
-                <div className="relative" style={{ height: '480px' }}>
+                <div className="absolute -left-10 top-10 px-4 py-2 bg-white/6 border border-white/10 backdrop-blur-sm text-white/70 text-[11px] tracking-[0.16em] uppercase font-sans hero-stack-shell">
+                  Monthly cycle live
+                </div>
+                <div className="absolute -right-5 bottom-16 px-4 py-2 bg-amber text-white text-[11px] tracking-[0.14em] uppercase font-sans shadow-[0_16px_40px_rgba(200,135,58,0.26)]">
+                  Static · Carousel · Reel
+                </div>
+                <div className="absolute -right-10 top-28 w-24 h-24 rounded-full border border-white/8 bg-white/4 backdrop-blur-sm flex items-center justify-center hero-stack-shell" style={{ animationDelay: '1.2s' }}>
+                  <img
+                    src="/brand/roovero-logos/roovero-mark-light.svg"
+                    alt=""
+                    className="w-10 h-10 opacity-85"
+                  />
+                </div>
+                <div className="relative hero-stack-shell" style={{ height: '520px' }}>
                   {posts.map((post, i) => (
                     <HeroPostCard
                       key={post.id}
@@ -354,10 +371,10 @@ export default function HomePage() {
                   ))}
                 </div>
                 {/* Label strip below post */}
-                <div className="mt-4 flex items-center gap-2">
+                <div className="mt-5 flex items-center gap-3">
                   <span className="amber-rule" style={{ width: '24px' }} />
                   <p className="text-[11px] text-white/35 font-sans">
-                    Cycling through Static · Carousel · Reel
+                    Real outputs staged like the monthly approval cycle
                   </p>
                 </div>
               </div>
@@ -461,7 +478,7 @@ export default function HomePage() {
                 <AnimateIn
                   key={sample.business}
                   delay={index * 80}
-                  className="w-[320px] md:w-[360px] bg-white/4 border border-white/10 backdrop-blur-sm flex-shrink-0 transition-transform duration-300 hover:-translate-y-1"
+                  className="sample-rail-card w-[320px] md:w-[360px] bg-white/4 border border-white/10 backdrop-blur-sm flex-shrink-0"
                 >
                   <div className="h-72 overflow-hidden">
                     <img

@@ -53,8 +53,11 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-10">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-serif italic text-ink">Roovero</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-amber" />
+            <img
+              src="/brand/roovero-logos/roovero-logo-dark.svg"
+              alt="Roovero"
+              className="h-10 w-auto"
+            />
           </Link>
         </div>
 

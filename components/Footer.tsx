@@ -8,8 +8,11 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl font-serif italic text-white">Roovero</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-amber" />
+              <img
+                src="/brand/roovero-logos/roovero-logo-light.svg"
+                alt="Roovero"
+                className="h-10 w-auto"
+              />
             </div>
             <p className="text-sm leading-relaxed max-w-xs">
               Content operations for Indian SMBs. Generation, approval, editing, and publishing — in one system, without the agency overhead.

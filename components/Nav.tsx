@@ -31,14 +31,15 @@ export default function Nav({ heroIsDark = false }: NavProps) {
 
         {/* Wordmark */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <span
-            className={`text-[1.35rem] font-serif italic tracking-tight transition-colors duration-200 ${
-              isTransparent ? 'text-white' : 'text-ink'
-            }`}
-          >
-            Roovero
-          </span>
-          <span className="diamond-accent" />
+          <img
+            src={
+              isTransparent
+                ? '/brand/roovero-logos/roovero-logo-light.svg'
+                : '/brand/roovero-logos/roovero-logo-dark.svg'
+            }
+            alt="Roovero"
+            className="h-8 w-auto"
+          />
         </Link>
 
         {/* Desktop links */}

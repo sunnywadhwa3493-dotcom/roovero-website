@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 72" width="340" height="72">
+  <!-- Roovero wordmark only - transparent background - works light or dark via CSS color -->
+
+  <!-- ROOVERO wordmark -->
+  <text
+    x="0"
+    y="54"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="54"
+    font-weight="400"
+    font-style="normal"
+    fill="#111111"
+    letter-spacing="3"
+  >ROOVERO</text>
+
+  <!-- Amber rule -->
+  <rect x="0" y="62" width="336" height="2" rx="1" fill="#C8873A"/>
+</svg>

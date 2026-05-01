@@ -17,7 +17,7 @@ const posts = [
     comments: 47,
     status: 'Published',
     statusColor: 'text-emerald-400',
-    gradient: 'linear-gradient(160deg, #2D1008 0%, #6B3015 28%, #B86820 58%, #D4A055 80%, #F0CCA0 100%)',
+    imagePath: '/assets/cafe-static.png',
     imageText: 'filter kaapi',
     imageSubtext: 'handcrafted daily',
   },
@@ -33,7 +33,7 @@ const posts = [
     comments: 63,
     status: 'Approved',
     statusColor: 'text-sky-400',
-    gradient: 'linear-gradient(145deg, #150800 0%, #4A1A05 32%, #8B3A10 62%, #C85A25 85%, #E07840 100%)',
+    imagePath: '/assets/restaurant-campaign.png',
     imageText: 'this week',
     imageSubtext: '4 dishes · 4 stories',
   },
@@ -49,7 +49,7 @@ const posts = [
     comments: 128,
     status: 'Awaiting review',
     statusColor: 'text-amber-400',
-    gradient: 'linear-gradient(155deg, #180C1A 0%, #3F1445 32%, #7A2E6A 62%, #B05590 84%, #D890B8 100%)',
+    imagePath: '/assets/salon-reel-cover.png',
     imageText: 'the transformation',
     imageSubtext: '0:23 · Studio Nine',
   },
@@ -79,7 +79,12 @@ function HeroPostCard({ post, cycleClass }: { post: typeof posts[0]; cycleClass:
         </div>
 
         {/* Image */}
-        <div className="relative h-52 overflow-hidden" style={{ background: post.gradient }}>
+        <div className="relative h-52 overflow-hidden bg-stone">
+          <img
+            src={post.imagePath}
+            alt={`${post.business} ${post.type}`}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
           {post.id === 'reel' && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-10 h-10 rounded-full bg-white/20 border border-white/40 flex items-center justify-center">
@@ -135,7 +140,7 @@ const proofPosts = [
   {
     business: 'Aroha Café',
     type: 'Static',
-    gradient: 'linear-gradient(160deg, #2D1008 0%, #6B3015 28%, #B86820 58%, #D4A055 80%, #F0CCA0 100%)',
+    imagePath: '/assets/cafe-static.png',
     caption: '"Sunday mornings are for slow pours. Our filter kaapi returns this weekend. Drop in before 11."',
     hashtags: '#FilterCoffee #Bengaluru #SundayMorning #CafeLife',
     likes: '2,438',
@@ -148,7 +153,7 @@ const proofPosts = [
   {
     business: 'Spice Route Kitchen',
     type: 'Carousel · 4 slides',
-    gradient: 'linear-gradient(145deg, #150800 0%, #4A1A05 32%, #8B3A10 62%, #C85A25 85%, #E07840 100%)',
+    imagePath: '/assets/restaurant-campaign.png',
     caption: '"This week\'s specials are in. Each dish crafted fresh. Swipe for the full menu."',
     hashtags: '#IndianFood #WeeklySpecial #Bengaluru #DineIn',
     likes: '1,847',
@@ -161,7 +166,7 @@ const proofPosts = [
   {
     business: 'Studio Nine Salon',
     type: 'Reel · 0:23',
-    gradient: 'linear-gradient(155deg, #180C1A 0%, #3F1445 32%, #7A2E6A 62%, #B05590 84%, #D890B8 100%)',
+    imagePath: '/assets/salon-reel-cover.png',
     caption: '"From consultation to colour. Watch the full transformation. Book your slot this week."',
     hashtags: '#SalonLife #HairTransformation #Bengaluru #BeforeAfter',
     likes: '5,102',
@@ -170,6 +175,19 @@ const proofPosts = [
     statusBg: 'bg-amber-50',
     statusText: 'text-amber-700',
     imageText: 'the transformation · 0:23',
+  },
+  {
+    business: 'Soma Botanicals',
+    type: 'Static · D2C',
+    imagePath: '/assets/d2c-skincare.png',
+    caption: '"A quieter hydration ritual. Saffron, hyaluronic acid, and a formula built for daily use."',
+    hashtags: '#SkincareIndia #D2CBeauty #HydrationRoutine #SomaBotanicals',
+    likes: '1,264',
+    comments: 21,
+    status: 'Generated',
+    statusBg: 'bg-stone',
+    statusText: 'text-smoke',
+    imageText: 'hydrating serum · launch visual',
   },
 ]
 
@@ -350,28 +368,31 @@ export default function HomePage() {
               </h2>
               <p className="text-smoke font-sans text-base leading-relaxed mt-4 max-w-xl">
                 Every post is generated from your brand context, queued for approval, and published
-                to Instagram automatically. Here is what the output looks like across post types.
-              </p>
-              <p className="text-ash font-sans text-xs leading-relaxed mt-4 max-w-xl">
-                Representative layouts shown below. Swap these for live client outputs or approved
-                campaign imagery as soon as you have them.
+                to Instagram automatically. These examples show how the system adapts across
+                hospitality, beauty, and D2C brands.
               </p>
             </AnimateIn>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-mist">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-0 border border-mist">
               {proofPosts.map((post, i) => (
                 <AnimateIn
                   key={post.business}
                   delay={i * 100}
-                  className={`${i < 2 ? 'md:border-r border-mist border-b md:border-b-0' : ''}`}
+                  className={[
+                    i < proofPosts.length - 1 ? 'border-b xl:border-b-0 border-mist' : '',
+                    i === 0 || i === 2 ? 'md:border-r border-mist' : '',
+                    i < 3 ? 'xl:border-r border-mist' : '',
+                  ].join(' ')}
                 >
                   {/* Post card */}
                   <div className="bg-white h-full flex flex-col">
                     {/* Image */}
-                    <div
-                      className="h-52 relative overflow-hidden flex-shrink-0"
-                      style={{ background: post.gradient }}
-                    >
+                    <div className="h-52 relative overflow-hidden flex-shrink-0 bg-stone">
+                      <img
+                        src={post.imagePath}
+                        alt={`${post.business} ${post.type}`}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
                       {post.type.startsWith('Reel') && (
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="w-12 h-12 rounded-full border-2 border-white/50 flex items-center justify-center bg-white/10">
@@ -421,6 +442,13 @@ export default function HomePage() {
                 </AnimateIn>
               ))}
             </div>
+
+            <AnimateIn delay={120} className="mt-8">
+              <p className="text-xs text-smoke font-sans max-w-2xl">
+                Sample brand assets shown from four distinct categories to demonstrate style adaptability.
+                Replace with live campaign outputs as client permission allows.
+              </p>
+            </AnimateIn>
           </div>
         </section>
 

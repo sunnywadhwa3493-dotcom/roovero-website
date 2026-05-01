@@ -31,8 +31,11 @@ function SuccessContent() {
       <div className="w-full max-w-md text-center">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-12">
-          <span className="text-2xl font-serif italic text-ink">Roovero</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-amber" />
+          <img
+            src="/brand/roovero-logos/roovero-logo-dark.svg"
+            alt="Roovero"
+            className="h-10 w-auto"
+          />
         </div>
 
         {/* Success icon */}

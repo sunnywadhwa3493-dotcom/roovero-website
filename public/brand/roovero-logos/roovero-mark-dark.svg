@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!-- Roovero mark - dark version - white strokes for dark backgrounds -->
+
+  <!-- VOICE ARCS -->
+  <path d="M44 62 Q44 38 60 34 Q76 38 76 62"
+    fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M32 62 Q32 24 60 18 Q88 24 88 62"
+    fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+  <path d="M20 62 Q20 10 60 4 Q100 10 100 62"
+    fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- AMBER GROUND LINE -->
+  <line x1="22" y1="62" x2="98" y2="62"
+    stroke="#C8873A" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- ROOT SYSTEM - white on dark -->
+  <line x1="60" y1="62" x2="60" y2="100"
+    stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M60 80 Q42 86 36 100"
+    fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M60 80 Q78 86 84 100"
+    fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M48 90 Q38 93 34 104"
+    fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M72 90 Q82 93 86 104"
+    fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+
+  <!-- AMBER ORIGIN DOT -->
+  <circle cx="60" cy="62" r="7" fill="#C8873A"/>
+</svg>

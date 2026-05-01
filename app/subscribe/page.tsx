@@ -82,7 +82,7 @@ function SubscribeContent() {
               currency: data.currency ?? 'INR',
               name: 'Roovero',
               description: `${addOn?.name ?? addonId} purchase`,
-              image: 'https://roovero.com/logo.png',
+              image: 'https://roovero.com/brand/roovero-logos/logo.png',
               prefill: { name: '', email: '', contact: '' },
               notes: { uid, clientId, addOnId: addOn?.id ?? addonId },
               theme: { color: '#C8873A' },
@@ -96,7 +96,7 @@ function SubscribeContent() {
               subscription_id: data.subscriptionId,
               name: 'Roovero',
               description: `${plan?.name ?? addOn?.name ?? addonId} subscription`,
-              image: 'https://roovero.com/logo.png',
+              image: 'https://roovero.com/brand/roovero-logos/logo.png',
               prefill: { name: '', email: '', contact: '' },
               notes: isAddon
                 ? { uid, clientId, addOnId: addOn?.id ?? addonId }
@@ -160,8 +160,11 @@ function SubscribeContent() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-6">
-            <span className="text-2xl font-serif italic text-ink">Roovero</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-amber" />
+            <img
+              src="/brand/roovero-logos/roovero-logo-dark.svg"
+              alt="Roovero"
+              className="h-10 w-auto mx-auto"
+            />
           </div>
           <p className="text-smoke text-sm">Complete your subscription</p>
         </div>

@@ -173,6 +173,45 @@ const proofPosts = [
   },
 ]
 
+const productScreens = [
+  {
+    eyebrow: 'Dashboard',
+    title: 'Monthly output, one view.',
+    body: 'The home screen keeps approvals, next posts, and performance in one place so clients do not have to chase multiple tools.',
+  },
+  {
+    eyebrow: 'Approval queue',
+    title: 'Every post is reviewed in-app.',
+    body: 'Approve, reject, or describe an edit in plain English before anything publishes. This is the step that keeps Roovero useful instead of reckless.',
+  },
+  {
+    eyebrow: 'Analytics',
+    title: 'Performance loops back into the next cycle.',
+    body: 'Meta analytics and screenshot metrics feed the next calendar so the system learns what actually moved reach, saves, and engagement.',
+  },
+]
+
+const pilotFeedback = [
+  {
+    quote:
+      'The key shift was not more content. It was having approvals and publishing happen in one place instead of through WhatsApp and back-and-forth.',
+    label: 'Pilot feedback',
+    context: 'Bengaluru café operator',
+  },
+  {
+    quote:
+      'We finally had a clean way to ask for edits without restarting the whole process. That made the system feel practical, not experimental.',
+    label: 'Pilot feedback',
+    context: 'Salon founder',
+  },
+  {
+    quote:
+      'Core felt like the first plan where this became infrastructure. Once publishing and analytics were connected, it stopped feeling like another AI toy.',
+    label: 'Pilot feedback',
+    context: 'D2C brand operator',
+  },
+]
+
 /* ─── Page ───────────────────────────────────────────────── */
 export default function HomePage() {
   return (
@@ -313,6 +352,10 @@ export default function HomePage() {
                 Every post is generated from your brand context, queued for approval, and published
                 to Instagram automatically. Here is what the output looks like across post types.
               </p>
+              <p className="text-ash font-sans text-xs leading-relaxed mt-4 max-w-xl">
+                Representative layouts shown below. Swap these for live client outputs or approved
+                campaign imagery as soon as you have them.
+              </p>
             </AnimateIn>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-mist">
@@ -435,29 +478,29 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ══════════════════════════════ 5. APPROVAL FLOW ══ */}
+        {/* ══════════════════════════════ 5. INSIDE THE APP ══ */}
         <section className="bg-white py-28 px-6">
           <div className="max-w-content mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
-              <AnimateIn>
-                <span className="text-[11px] tracking-widest text-smoke uppercase font-sans">Approval flow</span>
+            <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-20 items-start">
+              <AnimateIn className="max-w-xl">
+                <span className="text-[11px] tracking-widest text-smoke uppercase font-sans">Inside the app</span>
                 <h2
                   className="font-serif italic text-ink mt-4 mb-6"
                   style={{ fontSize: 'clamp(1.9rem, 3.5vw, 2.75rem)', letterSpacing: '-0.02em' }}
                 >
-                  Every post goes through you before it goes anywhere.
+                  What the product actually looks like when it runs.
                 </h2>
                 <p className="text-smoke font-sans leading-relaxed mb-8">
-                  Generated content sits in a review queue. You approve it as-is, or describe
-                  an edit in plain language — caption tone, image composition, layout. The edit
-                  is handled within the plan's credit system. Nothing publishes without your sign-off.
+                  The website should sell the product you are actually building. Roovero is not a
+                  vague AI assistant. It is a workflow: dashboard, approval queue, publishing, and
+                  analytics tied together in one operating surface.
                 </p>
                 <ul className="space-y-4">
                   {[
-                    'In-app approval queue — per post, before scheduling',
-                    'Plain-language edits: "make the caption more direct"',
-                    'Edit credits govern request volume — 10 to 80 per month',
-                    'Brand-photo generation lane for visual adjustments',
+                    'Dashboard keeps approvals, publishing, and performance visible',
+                    'Approval queue prevents unreviewed posts from going live',
+                    'Plain-language edits keep iteration inside the workflow',
+                    'Analytics and comments close the loop for the next cycle',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3 text-sm text-ink font-sans">
                       <span className="flex-shrink-0 mt-0.5 w-4 h-4 border border-amber/50 flex items-center justify-center">
@@ -469,34 +512,105 @@ export default function HomePage() {
                 </ul>
               </AnimateIn>
 
-              <AnimateIn delay={150} className="space-y-3">
-                {/* State 1: Generated */}
-                <div className="border border-mist bg-stone p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] uppercase tracking-widest text-smoke font-sans">Static · Post 14 of 30</span>
-                    <span className="text-[10px] font-sans text-ink bg-mist px-2.5 py-1 uppercase tracking-wide">Generated</span>
-                  </div>
-                  <div className="h-16 mb-3" style={{ background: 'linear-gradient(160deg, #2D1008 0%, #B86820 60%, #F0CCA0 100%)' }} />
-                  <p className="text-xs text-ink font-sans leading-relaxed">"Sunday mornings are for slow pours. Our filter kaapi returns this weekend."</p>
-                  <div className="mt-3 pt-3 border-t border-mist text-[10px] text-smoke font-sans">Sunday · 9:00 AM · Instagram</div>
-                </div>
+              <div className="space-y-5">
+                {productScreens.map((screen, index) => (
+                  <AnimateIn key={screen.title} delay={120 + index * 80}>
+                    <div className="border border-mist bg-stone overflow-hidden">
+                      <div className="px-5 py-3 border-b border-mist flex items-center justify-between">
+                        <div>
+                          <p className="text-[10px] uppercase tracking-widest text-smoke font-sans">{screen.eyebrow}</p>
+                          <p className="font-serif italic text-ink text-lg mt-1">{screen.title}</p>
+                        </div>
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 status-live" />
+                      </div>
+                      <div className="p-5">
+                        {index == 0 && (
+                          <div className="bg-white border border-mist p-4">
+                            <div className="grid grid-cols-3 gap-3 mb-4">
+                              {[
+                                ['30', 'posts this cycle'],
+                                ['11', 'awaiting approval'],
+                                ['82%', 'AI efficiency'],
+                              ].map(([value, label]) => (
+                                <div key={label} className="bg-stone p-3">
+                                  <div className="font-serif italic text-xl text-ink">{value}</div>
+                                  <div className="text-[10px] text-smoke font-sans mt-1 uppercase tracking-wide">{label}</div>
+                                </div>
+                              ))}
+                            </div>
+                            <div className="border border-mist p-4">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="text-[10px] uppercase tracking-widest text-smoke font-sans">Next in queue</span>
+                                <span className="text-[10px] text-amber font-sans uppercase tracking-wide">Today · 4:30 PM</span>
+                              </div>
+                              <p className="text-sm text-ink font-sans">Carousel draft for weekly specials is ready for approval.</p>
+                            </div>
+                          </div>
+                        )}
 
-                {/* State 2: Edit request */}
-                <div className="border border-amber/25 p-4" style={{ background: 'var(--amber-pale)' }}>
-                  <div className="text-[10px] uppercase tracking-widest mb-2 font-sans" style={{ color: 'var(--amber)' }}>Edit request</div>
-                  <p className="text-sm text-ink font-sans">"Change the image to show latte art, not a plain black coffee"</p>
-                </div>
+                        {index == 1 && (
+                          <div className="bg-white border border-mist p-4">
+                            <div className="flex items-start justify-between mb-3">
+                              <div>
+                                <div className="text-[10px] uppercase tracking-widest text-smoke font-sans">Post 14 of 30</div>
+                                <div className="font-serif italic text-ink text-lg mt-1">Filter kaapi weekend post</div>
+                              </div>
+                              <span className="text-[10px] font-sans text-amber-700 bg-amber-50 px-2.5 py-1 uppercase tracking-wide">Awaiting review</span>
+                            </div>
+                            <div className="h-28 mb-4" style={{ background: 'linear-gradient(160deg, #2D1008 0%, #B86820 60%, #F0CCA0 100%)' }} />
+                            <p className="text-sm text-ink font-sans leading-relaxed mb-4">
+                              “Sunday mornings are for slow pours. Our filter kaapi returns this weekend.”
+                            </p>
+                            <div className="grid grid-cols-3 gap-2 text-center">
+                              {['Approve', 'Quick edit', 'Regenerate'].map((action, actionIndex) => (
+                                <div
+                                  key={action}
+                                  className={`py-2 text-xs font-sans ${
+                                    actionIndex === 0
+                                      ? 'bg-ink text-white'
+                                      : 'border border-mist text-smoke bg-stone'
+                                  }`}
+                                >
+                                  {action}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
 
-                {/* State 3: Approved */}
-                <div className="border border-mist bg-stone p-5 opacity-60">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] uppercase tracking-widest text-smoke font-sans">Carousel · Post 15 of 30</span>
-                    <span className="text-[10px] font-sans text-emerald-700 bg-emerald-50 px-2.5 py-1 uppercase tracking-wide">Approved</span>
-                  </div>
-                  <div className="h-12 mb-2" style={{ background: 'linear-gradient(145deg, #150800 0%, #C85A25 80%)' }} />
-                  <p className="text-[10px] text-smoke font-sans">3 slides · 4 hashtags · Monday 11:00 AM</p>
-                </div>
-              </AnimateIn>
+                        {index == 2 && (
+                          <div className="bg-white border border-mist p-4">
+                            <div className="grid grid-cols-2 gap-3 mb-4">
+                              <div className="bg-stone p-3">
+                                <div className="text-[10px] uppercase tracking-widest text-smoke font-sans">Reach</div>
+                                <div className="font-serif italic text-2xl text-ink mt-1">18.4k</div>
+                              </div>
+                              <div className="bg-stone p-3">
+                                <div className="text-[10px] uppercase tracking-widest text-smoke font-sans">Saves</div>
+                                <div className="font-serif italic text-2xl text-ink mt-1">612</div>
+                              </div>
+                            </div>
+                            <div className="border border-mist p-4">
+                              <div className="text-[10px] uppercase tracking-widest text-smoke font-sans mb-3">Weekly insight</div>
+                              <div className="w-full h-20 flex items-end gap-2">
+                                {[34, 62, 48, 76, 58, 84, 68].map((height, barIndex) => (
+                                  <div key={barIndex} className="flex-1 bg-stone relative">
+                                    <div
+                                      className="absolute bottom-0 left-0 right-0"
+                                      style={{ height: `${height}%`, background: barIndex === 5 ? 'var(--amber)' : 'var(--ink)' }}
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        <p className="text-smoke text-sm font-sans leading-relaxed mt-4">{screen.body}</p>
+                      </div>
+                    </div>
+                  </AnimateIn>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -585,7 +699,47 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ══════════════════════════════ 7. PRICING TEASE ══ */}
+        {/* ══════════════════════════════ 7. PILOT FEEDBACK ══ */}
+        <section className="bg-stone py-28 px-6">
+          <div className="max-w-content mx-auto">
+            <AnimateIn className="max-w-2xl mb-14">
+              <span className="text-[11px] tracking-widest text-smoke uppercase font-sans">Pilot feedback</span>
+              <h2
+                className="font-serif italic text-ink mt-4"
+                style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.025em' }}
+              >
+                What early operators actually valued.
+              </h2>
+              <p className="text-smoke font-sans text-base leading-relaxed mt-4 max-w-xl">
+                Kept anonymous on purpose. The useful signal here is not celebrity proof. It is
+                whether the workflow felt operationally better than briefs, agencies, and message threads.
+              </p>
+            </AnimateIn>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-mist bg-white">
+              {pilotFeedback.map((item, i) => (
+                <AnimateIn
+                  key={item.context}
+                  delay={i * 100}
+                  className={`${i < 2 ? 'md:border-r border-mist border-b md:border-b-0' : ''}`}
+                >
+                  <div className="p-8 h-full flex flex-col">
+                    <div className="w-6 h-px mb-6" style={{ background: 'var(--amber)' }} />
+                    <p className="text-ink font-serif italic text-lg leading-relaxed flex-1">
+                      “{item.quote}”
+                    </p>
+                    <div className="pt-6 mt-6 border-t border-mist">
+                      <div className="text-[10px] uppercase tracking-widest text-smoke font-sans">{item.label}</div>
+                      <div className="text-sm text-ink font-sans mt-1">{item.context}</div>
+                    </div>
+                  </div>
+                </AnimateIn>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════ 8. PRICING TEASE ══ */}
         <section className="bg-white py-28 px-6">
           <div className="max-w-content mx-auto">
             <AnimateIn className="text-center mb-16 max-w-2xl mx-auto">
@@ -660,7 +814,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ══════════════════════════════ 8. FINAL CTA ══ */}
+        {/* ══════════════════════════════ 9. FINAL CTA ══ */}
         <section className="bg-stone py-28 px-6">
           <div className="max-w-content mx-auto">
             <AnimateIn>

@@ -1,5 +1,21 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
+
+const variants = {
+  up: {
+    hidden: { opacity: 0, y: 28 },
+    visible: { opacity: 1, y: 0 },
+  },
+  left: {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 },
+  },
+  fade: {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  },
+}
 
 interface AnimateInProps {
   children: React.ReactNode
@@ -17,40 +33,22 @@ export default function AnimateIn({
   threshold = 0.12,
 }: AnimateInProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold }
-    )
-    const el = ref.current
-    if (el) observer.observe(el)
-    return () => observer.disconnect()
-  }, [threshold])
-
-  const initial: Record<string, string> = {
-    up:   'translateY(28px)',
-    left: 'translateX(-20px)',
-    fade: 'none',
-  }
+  const inView = useInView(ref, { once: true, amount: threshold })
 
   return (
-    <div
+    <motion.div
       ref={ref}
       className={className}
-      style={{
-        opacity:   visible ? 1 : 0,
-        transform: visible ? (direction === 'fade' ? 'none' : 'translate(0)') : initial[direction],
-        transition: `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+      variants={variants[direction]}
+      initial="hidden"
+      animate={inView ? 'visible' : 'hidden'}
+      transition={{
+        duration: 0.7,
+        ease: [0.22, 1, 0.36, 1] as const,
+        delay: delay / 1000,
       }}
     >
       {children}
-    </div>
+    </motion.div>
   )
 }

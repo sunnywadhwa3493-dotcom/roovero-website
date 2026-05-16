@@ -1,7 +1,15 @@
+'use client'
 import Link from 'next/link'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import AnimateIn from '@/components/AnimateIn'
+import HeroPostStack from '@/components/HeroPostStack'
+import { BackgroundBeams } from '@/components/ui/background-beams'
+import { SpotlightCard } from '@/components/ui/spotlight-card'
+import { WordReveal } from '@/components/ui/word-reveal'
+import { ShimmerBorder } from '@/components/ui/shimmer-border'
+import { CountUp } from '@/components/ui/count-up'
+import { motion } from 'framer-motion'
 
 /* ─── Simulated post data ─────────────────────────────────── */
 const posts = [
@@ -55,85 +63,6 @@ const posts = [
   },
 ]
 
-function HeroPostCard({ post, cycleClass }: { post: typeof posts[0]; cycleClass: string }) {
-  return (
-    <div className={`absolute inset-0 ${cycleClass} pointer-events-none`}>
-      <div className="bg-white shadow-2xl overflow-hidden" style={{ borderRadius: 0 }}>
-        {/* Post header */}
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-stone">
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold text-white"
-            style={{ background: 'var(--amber)' }}
-          >
-            {post.initial}
-          </div>
-          <div className="min-w-0">
-            <p className="text-[12px] font-semibold text-ink leading-tight truncate">{post.business}</p>
-            <p className="text-[10px] text-smoke">{post.handle}</p>
-          </div>
-          <div className="ml-auto flex gap-1">
-            {[0, 1, 2].map((i) => (
-              <span key={i} className="w-1 h-1 rounded-full bg-smoke/40" />
-            ))}
-          </div>
-        </div>
-
-        {/* Image */}
-        <div className="relative h-52 overflow-hidden bg-stone">
-          <img
-            src={post.imagePath}
-            alt={`${post.business} ${post.type}`}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          {post.id === 'reel' && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-10 h-10 rounded-full bg-white/20 border border-white/40 flex items-center justify-center">
-                <div className="w-0 h-0 ml-1" style={{ borderTop: '6px solid transparent', borderBottom: '6px solid transparent', borderLeft: '10px solid rgba(255,255,255,0.9)' }} />
-              </div>
-            </div>
-          )}
-          {post.id === 'carousel' && (
-            <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1">
-              {[0, 1, 2, 3].map((i) => (
-                <div key={i} className={`rounded-full ${i === 0 ? 'w-3 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/50'}`} />
-              ))}
-            </div>
-          )}
-          <div className="absolute bottom-0 left-0 right-0 px-3 pb-3 pt-8" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%)' }}>
-            <p className="text-white/90 text-[11px] font-light italic" style={{ fontFamily: 'Georgia, serif' }}>
-              {post.imageText}
-            </p>
-            <p className="text-white/55 text-[10px] mt-0.5">{post.imageSubtext}</p>
-          </div>
-        </div>
-
-        {/* Caption */}
-        <div className="px-4 pt-3 pb-1">
-          <p className="text-[11px] text-ink leading-relaxed">
-            <span className="font-semibold">{post.handle.replace('@', '')}</span>{' '}
-            {post.caption}
-          </p>
-          <p className="text-[10px] mt-1.5" style={{ color: 'var(--amber)' }}>{post.hashtags}</p>
-        </div>
-
-        {/* Engagement */}
-        <div className="px-4 py-3 flex items-center gap-4 text-[11px] text-smoke border-t border-stone mt-2">
-          <span>♡ {post.likes}</span>
-          <span>{post.comments} comments</span>
-          <div className="ml-auto flex items-center gap-1.5 text-[11px] font-medium">
-            <span className={`status-live inline-block w-1.5 h-1.5 rounded-full ${post.statusColor}`} style={{ background: 'currentColor' }} />
-            <span className={post.statusColor}>{post.status}</span>
-          </div>
-        </div>
-
-        {/* Type label */}
-        <div className="px-4 py-2 border-t border-stone bg-stone">
-          <span className="text-[10px] uppercase tracking-widest text-smoke font-sans">{post.type}</span>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 /* ─── Proof posts (below fold) ───────────────────────────── */
 const proofPosts = [
@@ -272,10 +201,13 @@ export default function HomePage() {
         {/* ══════════════════════════════ 1. HERO ══ */}
         <section className="relative min-h-screen bg-ink flex items-center pt-16 overflow-hidden">
 
+          {/* Aceternity background beams */}
+          <BackgroundBeams className="opacity-70" />
+
           {/* Ambient amber glow (top right) */}
           <div
             className="absolute inset-0 pointer-events-none hero-glow"
-            style={{ background: 'radial-gradient(ellipse 55% 60% at 78% 40%, rgba(200,135,58,0.09) 0%, transparent 65%)' }}
+            style={{ background: 'radial-gradient(ellipse 55% 60% at 78% 40%, rgba(200,135,58,0.11) 0%, transparent 65%)' }}
           />
           <div
             className="absolute inset-0 pointer-events-none"
@@ -283,41 +215,59 @@ export default function HomePage() {
           />
           {/* Subtle grid texture */}
           <div
-            className="absolute inset-0 pointer-events-none opacity-[0.035]"
+            className="absolute inset-0 pointer-events-none opacity-[0.028]"
             style={{
               backgroundImage: 'linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)',
               backgroundSize: '64px 64px',
             }}
           />
 
-          <div className="max-w-content mx-auto px-6 py-24 w-full relative">
+          <div className="max-w-content mx-auto px-6 py-24 w-full relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_430px] gap-16 xl:gap-24 items-center">
 
-              {/* Left: Text */}
+              {/* Left: Text — motion entrance */}
               <div>
-                <div className="flex items-center gap-3 mb-10 animate-fade-up delay-0">
+                <motion.div
+                  className="flex items-center gap-3 mb-10"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                >
                   <span className="amber-rule" />
                   <span className="text-[11px] tracking-widest text-white/50 uppercase font-sans">
                     Content Operations · Indian SMBs
                   </span>
-                </div>
+                </motion.div>
 
-                <h1
-                  className="font-serif italic text-white mb-8 animate-fade-up delay-100"
+                <motion.h1
+                  className="font-serif italic text-white mb-8"
                   style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5rem)', letterSpacing: '-0.03em', lineHeight: '1.04' }}
+                  initial={{ opacity: 0, y: 28 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.22 }}
                 >
                   Generate.<br />
                   Approve.<br />
                   <span style={{ color: 'var(--amber)' }}>Publish.</span>
-                </h1>
+                </motion.h1>
 
-                <p className="text-lg text-white/60 leading-relaxed font-sans max-w-xl mb-10 animate-fade-up delay-200">
+                <motion.p
+                  className="text-lg text-white/60 leading-relaxed font-sans max-w-xl mb-10"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.38 }}
+                >
                   Thirty posts a month — statics, carousels, and reels — delivered to your phone
                   for approval and pushed live automatically. Built for Indian cafés, restaurants,
                   salons, and D2C brands.
-                </p>
+                </motion.p>
 
-                <div className="flex flex-col sm:flex-row gap-4 mb-14 animate-fade-up delay-300">
+                <motion.div
+                  className="flex flex-col sm:flex-row gap-4 mb-14"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.52 }}
+                >
                   <Link
                     href="/pricing"
                     className="inline-flex items-center justify-center gap-2 bg-amber text-white px-8 py-4 text-base font-serif italic hover:bg-amber-light transition-colors"
@@ -330,54 +280,49 @@ export default function HomePage() {
                   >
                     How it works
                   </Link>
-                </div>
+                </motion.div>
 
-                <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/10 animate-fade-up delay-400">
+                <motion.div
+                  className="grid grid-cols-3 gap-6 pt-8 border-t border-white/10"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.68 }}
+                >
                   {[
-                    { number: '30', label: 'posts per month' },
-                    { number: '₹1,999', label: 'from Starter' },
-                    { number: '0', label: 'agencies needed' },
-                  ].map((stat) => (
-                    <div key={stat.label}>
-                      <div className="text-2xl font-serif italic text-white">{stat.number}</div>
+                    { value: 30,   prefix: '',  label: 'posts per month' },
+                    { value: 1999, prefix: '₹', label: 'from Starter' },
+                    { value: 0,    prefix: '',  label: 'agencies needed' },
+                  ].map((stat, i) => (
+                    <motion.div
+                      key={stat.label}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const, delay: 0.72 + i * 0.1 }}
+                    >
+                      <CountUp value={stat.value} prefix={stat.prefix} className="text-2xl font-serif italic text-white" />
                       <div className="text-xs text-white/40 font-sans mt-1">{stat.label}</div>
-                    </div>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </div>
 
-              {/* Right: cycling post stack */}
-              <div className="hidden lg:block relative animate-fade-in delay-500">
-                <div className="absolute -left-10 top-10 px-4 py-2 bg-white/6 border border-white/10 backdrop-blur-sm text-white/70 text-[11px] tracking-[0.16em] uppercase font-sans hero-stack-shell">
-                  Monthly cycle live
-                </div>
-                <div className="absolute -right-5 bottom-16 px-4 py-2 bg-amber text-white text-[11px] tracking-[0.14em] uppercase font-sans shadow-[0_16px_40px_rgba(200,135,58,0.26)]">
-                  Static · Carousel · Reel
-                </div>
-                <div className="absolute -right-10 top-28 w-24 h-24 rounded-full border border-white/8 bg-white/4 backdrop-blur-sm flex items-center justify-center hero-stack-shell" style={{ animationDelay: '1.2s' }}>
-                  <img
-                    src="/brand/roovero-logos/roovero-mark-light.svg"
-                    alt=""
-                    className="w-10 h-10 opacity-85"
-                  />
-                </div>
-                <div className="relative hero-stack-shell" style={{ height: '520px' }}>
-                  {posts.map((post, i) => (
-                    <HeroPostCard
-                      key={post.id}
-                      post={post}
-                      cycleClass={`cycle-${i + 1}` as string}
-                    />
-                  ))}
-                </div>
+              {/* Right: AnimatePresence post stack */}
+              <motion.div
+                className="hidden lg:block relative"
+                initial={{ opacity: 0, x: 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
+              >
+                <HeroPostStack posts={posts} />
+
                 {/* Label strip below post */}
-                <div className="mt-5 flex items-center gap-3">
+                <div className="mt-12 flex items-center gap-3">
                   <span className="amber-rule" style={{ width: '24px' }} />
                   <p className="text-[11px] text-white/35 font-sans">
                     Real outputs staged like the monthly approval cycle
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -409,12 +354,11 @@ export default function HomePage() {
           <div className="max-w-content mx-auto">
             <AnimateIn className="text-center max-w-2xl mx-auto mb-16">
               <span className="text-[11px] tracking-widest text-smoke uppercase font-sans">Shift</span>
-              <h2
-                className="font-serif italic text-ink mt-4"
+              <WordReveal
+                text="Before Roovero. After Roovero."
+                className="font-serif italic text-ink mt-4 justify-center"
                 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.025em' }}
-              >
-                Before Roovero. After Roovero.
-              </h2>
+              />
             </AnimateIn>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 border border-mist">
@@ -460,12 +404,11 @@ export default function HomePage() {
           <div className="max-w-content mx-auto mb-10 px-6">
             <AnimateIn className="max-w-2xl">
               <span className="text-[11px] tracking-widest text-white/45 uppercase font-sans">Versatility</span>
-              <h2
+              <WordReveal
+                text="One system. Different brand voices."
                 className="font-serif italic text-white mt-4"
                 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.025em' }}
-              >
-                One system. Different brand voices.
-              </h2>
+              />
               <p className="text-white/55 font-sans text-base leading-relaxed mt-4 max-w-xl">
                 The proof is not one generic AI look. It is the ability to adapt visual language across categories while keeping the workflow identical behind the scenes.
               </p>
@@ -478,26 +421,28 @@ export default function HomePage() {
                 <AnimateIn
                   key={sample.business}
                   delay={index * 80}
-                  className="sample-rail-card w-[320px] md:w-[360px] bg-white/4 border border-white/10 backdrop-blur-sm flex-shrink-0"
+                  direction="up"
                 >
-                  <div className="h-72 overflow-hidden">
-                    <img
-                      src={sample.imagePath}
-                      alt={`${sample.business} sample output`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center justify-between gap-4 mb-3">
-                      <p className="font-serif italic text-white text-xl">{sample.business}</p>
-                      <span className="text-[10px] uppercase tracking-widest text-amber font-sans whitespace-nowrap">
-                        {sample.type}
-                      </span>
+                  <SpotlightCard className="w-[320px] md:w-[360px] bg-white/4 border border-white/10 backdrop-blur-sm flex-shrink-0">
+                    <div className="h-72 overflow-hidden">
+                      <img
+                        src={sample.imagePath}
+                        alt={`${sample.business} sample output`}
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      />
                     </div>
-                    <p className="text-white/55 text-sm font-sans leading-relaxed">
-                      {sample.description}
-                    </p>
-                  </div>
+                    <div className="p-6">
+                      <div className="flex items-center justify-between gap-4 mb-3">
+                        <p className="font-serif italic text-white text-xl">{sample.business}</p>
+                        <span className="text-[10px] uppercase tracking-widest text-amber font-sans whitespace-nowrap">
+                          {sample.type}
+                        </span>
+                      </div>
+                      <p className="text-white/55 text-sm font-sans leading-relaxed">
+                        {sample.description}
+                      </p>
+                    </div>
+                  </SpotlightCard>
                 </AnimateIn>
               ))}
             </div>
@@ -509,12 +454,11 @@ export default function HomePage() {
           <div className="max-w-content mx-auto">
             <AnimateIn className="max-w-2xl mb-16">
               <span className="text-[11px] tracking-widest text-smoke uppercase font-sans">Output</span>
-              <h2
+              <WordReveal
+                text="What goes out every month."
                 className="font-serif italic text-ink mt-4"
                 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.025em' }}
-              >
-                What goes out every month.
-              </h2>
+              />
               <p className="text-smoke font-sans text-base leading-relaxed mt-4 max-w-xl">
                 Every post is generated from your brand context, queued for approval, and published
                 to Instagram automatically. These examples show how the system adapts across
@@ -606,12 +550,11 @@ export default function HomePage() {
           <div className="max-w-content mx-auto">
             <AnimateIn className="max-w-2xl mb-16">
               <span className="text-[11px] tracking-widest text-smoke uppercase font-sans">Workflow</span>
-              <h2
+              <WordReveal
+                text="Three steps. Then it runs."
                 className="font-serif italic text-ink mt-4"
                 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.025em' }}
-              >
-                Three steps. Then it runs.
-              </h2>
+              />
             </AnimateIn>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-mist">
@@ -661,12 +604,11 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-[0.92fr_1.08fr] gap-16 xl:gap-24 items-start">
               <AnimateIn className="max-w-xl">
                 <span className="text-[11px] tracking-widest text-white/45 uppercase font-sans">The Roovero operating system</span>
-                <h2
+                <WordReveal
+                  text="The layer between content generation and a real business workflow."
                   className="font-serif italic text-white mt-4 mb-6"
                   style={{ fontSize: 'clamp(1.9rem, 3.5vw, 2.75rem)', letterSpacing: '-0.02em' }}
-                >
-                  The layer between content generation and a real business workflow.
-                </h2>
+                />
                 <p className="text-white/60 font-sans leading-relaxed mb-8">
                   This is where the product stops being a prompt toy. Roovero becomes useful because
                   it turns generation, approvals, publishing, and learning into one repeatable cycle.
@@ -771,12 +713,11 @@ export default function HomePage() {
               <span className="text-[11px] tracking-widest uppercase font-sans" style={{ color: 'var(--amber)' }}>
                 The full stack
               </span>
-              <h2
+              <WordReveal
+                text="Core is where Roovero stops being a generator and starts being infrastructure."
                 className="font-serif italic text-white mt-4"
                 style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)', letterSpacing: '-0.025em', lineHeight: '1.1' }}
-              >
-                Core is where Roovero stops being a generator<br />and starts being infrastructure.
-              </h2>
+              />
               <p className="text-white/55 font-sans leading-relaxed mt-6 text-lg max-w-2xl">
                 Starter proves the output loop. Core unlocks Meta connect, auto-publish, analytics,
                 and the first real operating model. Growth and Studio expand video, engagement depth,
@@ -853,12 +794,11 @@ export default function HomePage() {
           <div className="max-w-content mx-auto">
             <AnimateIn className="max-w-2xl mb-14">
               <span className="text-[11px] tracking-widest text-smoke uppercase font-sans">Pilot feedback</span>
-              <h2
+              <WordReveal
+                text="What early operators actually valued."
                 className="font-serif italic text-ink mt-4"
                 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.025em' }}
-              >
-                What early operators actually valued.
-              </h2>
+              />
               <p className="text-smoke font-sans text-base leading-relaxed mt-4 max-w-xl">
                 Kept anonymous on purpose. The useful signal here is not celebrity proof. It is
                 whether the workflow felt operationally better than briefs, agencies, and message threads.
@@ -893,62 +833,63 @@ export default function HomePage() {
           <div className="max-w-content mx-auto">
             <AnimateIn className="text-center mb-16 max-w-2xl mx-auto">
               <span className="text-[11px] tracking-widest text-smoke uppercase font-sans">Pricing</span>
-              <h2
-                className="font-serif italic text-ink mt-4 mb-5"
+              <WordReveal
+                text="Five tiers. One clear ladder."
+                className="font-serif italic text-ink mt-4 mb-5 justify-center"
                 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '-0.025em' }}
-              >
-                Five tiers. One clear ladder.
-              </h2>
+              />
               <p className="text-smoke font-sans text-base leading-relaxed">
                 Free proves the loop. Starter establishes daily output. Core, Growth, and Studio
                 scale publishing, video, and engagement depth with clear metered tradeoffs.
               </p>
             </AnimateIn>
 
-            <AnimateIn delay={100} className="border border-mist max-w-5xl mx-auto">
-              {[
-                { id: 'free',    price: 'Free',     tag: 'Discovery',       detail: '8 watermarked statics · no Meta connect' },
-                { id: 'starter', price: '₹1,999',   tag: 'Starter',         detail: '30 posts · 1 reel · 10 edits · WhatsApp share' },
-                { id: 'core',    price: '₹4,999',   tag: 'Core',            detail: 'Meta publish · analytics · 7 carousels · 2 reels', highlight: true },
-                { id: 'growth',  price: '₹8,999',   tag: 'Growth',          detail: '5 reels · 3 competitor slots · 50 AI replies' },
-                { id: 'studio',  price: '₹14,999',  tag: 'Studio',          detail: '60 posts · 8 reels · 200 AI replies · priority queue' },
-              ].map((plan, i) => (
-                <div
-                  key={plan.id}
-                  className={`flex items-center justify-between gap-4 px-8 py-5 ${
-                    i < 4 ? 'border-b border-mist' : ''
-                  } ${plan.highlight ? 'bg-ink text-white' : 'hover:bg-stone transition-colors'}`}
-                >
-                  <div className="flex items-center gap-6 min-w-0">
-                    <span className={`font-serif italic text-xl flex-shrink-0 ${plan.highlight ? 'text-white' : 'text-ink'}`}>
-                      {plan.tag}
-                    </span>
-                    {plan.highlight && (
-                      <span className="text-[10px] uppercase tracking-widest text-amber font-sans flex-shrink-0">
-                        Recommended
+            <AnimateIn delay={100} className="max-w-5xl mx-auto">
+              <ShimmerBorder className="border border-mist">
+                {[
+                  { id: 'free',    price: 'Free',     tag: 'Discovery',  detail: '8 watermarked statics · no Meta connect' },
+                  { id: 'starter', price: '₹1,999',   tag: 'Starter',    detail: '30 posts · 1 reel · 10 edits · WhatsApp share' },
+                  { id: 'core',    price: '₹4,999',   tag: 'Core',       detail: 'Meta publish · analytics · 7 carousels · 2 reels', highlight: true },
+                  { id: 'growth',  price: '₹8,999',   tag: 'Growth',     detail: '5 reels · 3 competitor slots · 50 AI replies' },
+                  { id: 'studio',  price: '₹14,999',  tag: 'Studio',     detail: '60 posts · 8 reels · 200 AI replies · priority queue' },
+                ].map((plan, i) => (
+                  <div
+                    key={plan.id}
+                    className={`flex items-center justify-between gap-4 px-8 py-5 ${
+                      i < 4 ? 'border-b border-mist' : ''
+                    } ${plan.highlight ? 'bg-ink text-white' : 'hover:bg-stone transition-colors'}`}
+                  >
+                    <div className="flex items-center gap-6 min-w-0">
+                      <span className={`font-serif italic text-xl flex-shrink-0 ${plan.highlight ? 'text-white' : 'text-ink'}`}>
+                        {plan.tag}
                       </span>
-                    )}
-                    <span className={`text-sm font-sans truncate hidden sm:block ${plan.highlight ? 'text-white/55' : 'text-smoke'}`}>
-                      {plan.detail}
-                    </span>
+                      {plan.highlight && (
+                        <span className="text-[10px] uppercase tracking-widest text-amber font-sans flex-shrink-0">
+                          Recommended
+                        </span>
+                      )}
+                      <span className={`text-sm font-sans truncate hidden sm:block ${plan.highlight ? 'text-white/55' : 'text-smoke'}`}>
+                        {plan.detail}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-6 flex-shrink-0">
+                      <span className={`font-serif italic text-lg ${plan.highlight ? 'text-white' : 'text-ink'}`}>
+                        {plan.price}
+                      </span>
+                      <Link
+                        href={`/subscribe?plan=${plan.id}`}
+                        className={`text-sm font-serif italic px-5 py-2 transition-colors ${
+                          plan.highlight
+                            ? 'bg-amber text-white hover:bg-amber-light'
+                            : 'bg-ink text-white hover:bg-amber'
+                        }`}
+                      >
+                        {plan.id === 'free' ? 'Start free' : 'Get started'}
+                      </Link>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-6 flex-shrink-0">
-                    <span className={`font-serif italic text-lg ${plan.highlight ? 'text-white' : 'text-ink'}`}>
-                      {plan.price}
-                    </span>
-                    <Link
-                      href={`/subscribe?plan=${plan.id}`}
-                      className={`text-sm font-serif italic px-5 py-2 transition-colors ${
-                        plan.highlight
-                          ? 'bg-amber text-white hover:bg-amber-light'
-                          : 'bg-ink text-white hover:bg-amber'
-                      }`}
-                    >
-                      {plan.id === 'free' ? 'Start free' : 'Get started'}
-                    </Link>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </ShimmerBorder>
             </AnimateIn>
 
             <AnimateIn delay={150} className="text-center mt-8">
@@ -969,12 +910,11 @@ export default function HomePage() {
             <AnimateIn>
               <div className="border border-amber/25 p-12 md:p-20 max-w-3xl mx-auto" style={{ background: 'rgba(200,135,58,0.04)' }}>
                 <span className="text-[11px] tracking-widest text-smoke uppercase font-sans block mb-6">Ready?</span>
-                <h2
+                <WordReveal
+                  text="The content calendar runs every month. The question is whether yours does."
                   className="font-serif italic text-ink mb-6"
                   style={{ fontSize: 'clamp(1.9rem, 3.5vw, 2.75rem)', letterSpacing: '-0.02em', lineHeight: '1.1' }}
-                >
-                  The content calendar runs every month. The question is whether yours does.
-                </h2>
+                />
                 <p className="text-smoke font-sans mb-10 leading-relaxed">
                   Start on Free. Move to Starter when you want daily output. Upgrade to Core when
                   you need Meta publishing and analytics to run in one system.

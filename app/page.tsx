@@ -9,6 +9,7 @@ import { SpotlightCard } from '@/components/ui/spotlight-card'
 import { WordReveal } from '@/components/ui/word-reveal'
 import { ShimmerBorder } from '@/components/ui/shimmer-border'
 import { CountUp } from '@/components/ui/count-up'
+import { ParabolicPhones } from '@/components/ui/parabolic-phones'
 import { motion } from 'framer-motion'
 
 /* ─── Simulated post data ─────────────────────────────────── */
@@ -365,40 +366,56 @@ export default function HomePage() {
               />
             </AnimateIn>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 border border-mist">
-              <AnimateIn className="bg-stone p-10 lg:p-14 border-b lg:border-b-0 lg:border-r border-mist">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+              {/* Left column — The old way */}
+              <div className="bg-stone p-10 lg:p-14 border border-mist lg:border-r">
                 <div className="text-smoke text-sm font-sans uppercase tracking-[0.18em] mb-8">The old way</div>
                 <ul className="space-y-5">
                   {[
-                    'Hours spent every week figuring out what to post.',
-                    'Inconsistent output because content depends on energy, mood, or agency follow-up.',
-                    'Approval requests scattered across WhatsApp, calls, and screenshots.',
-                    'No clean loop from performance back into the next month’s content.',
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-4 text-smoke text-base font-sans leading-relaxed">
-                      <span className="mt-1 text-red-500/70">✕</span>
+                    "Hours spent every week figuring out what to post.",
+                    "Inconsistent output because content depends on energy, mood, or agency follow-up.",
+                    "Approval requests scattered across WhatsApp, calls, and screenshots.",
+                    "No clean loop from performance back into the next month’s content.",
+                  ].map((item, i) => (
+                    <motion.li
+                      key={item}
+                      initial={{ opacity: 0, x: -24 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.4 }}
+                      transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] as const }}
+                      className="flex items-start gap-4 text-smoke text-base font-sans leading-relaxed"
+                    >
+                      <span className="mt-1 text-red-500/70 flex-shrink-0">✕</span>
                       <span>{item}</span>
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
-              </AnimateIn>
+              </div>
 
-              <AnimateIn delay={120} className="bg-ink text-white p-10 lg:p-14">
+              {/* Right column — The Roovero way */}
+              <div className="bg-ink text-white p-10 lg:p-14 border border-mist lg:border-l-0">
                 <div className="text-white/45 text-sm font-sans uppercase tracking-[0.18em] mb-8">The Roovero way</div>
                 <ul className="space-y-5">
                   {[
-                    'Monthly content generation happens inside one operating cycle.',
-                    'Approvals, quick edits, and publishing happen in the same system.',
-                    'The output can shift from café warmth to restaurant energy to beauty polish.',
-                    'Performance and comments improve the next cycle instead of getting lost.',
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-4 text-white/80 text-base font-sans leading-relaxed">
-                      <span className="mt-1 text-amber">✓</span>
+                    "Monthly content generation happens inside one operating cycle.",
+                    "Approvals, quick edits, and publishing happen in the same system.",
+                    "The output can shift from café warmth to restaurant energy to beauty polish.",
+                    "Performance and comments improve the next cycle instead of getting lost.",
+                  ].map((item, i) => (
+                    <motion.li
+                      key={item}
+                      initial={{ opacity: 0, x: 24 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.4 }}
+                      transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] as const }}
+                      className="flex items-start gap-4 text-white/80 text-base font-sans leading-relaxed"
+                    >
+                      <span className="mt-1 text-amber flex-shrink-0">✓</span>
                       <span>{item}</span>
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
-              </AnimateIn>
+              </div>
             </div>
           </div>
         </section>
@@ -706,6 +723,27 @@ export default function HomePage() {
                   </div>
                 </AnimateIn>
               </div>
+            </div>
+
+            {/* Parabolic phone arc showing app features */}
+            <div className="mt-32 pt-20 border-t border-white/10">
+              <AnimateIn className="max-w-xl mb-16">
+                <span className="text-[11px] tracking-widest text-white/45 uppercase font-sans">App interface</span>
+                <p className="text-white/60 font-sans leading-relaxed text-base mt-4">
+                  Every screen you need, one arc away. Approval, editing, analytics, and publishing flow naturally from generation.
+                </p>
+              </AnimateIn>
+
+              {/* Parabolic phones component */}
+              <ParabolicPhones
+                phones={[
+                  { id: 'calendar', label: 'Content Calendar' },
+                  { id: 'approvals', label: 'Approval Flow' },
+                  { id: 'edits', label: 'Edit Requests' },
+                  { id: 'analytics', label: 'Analytics' },
+                  { id: 'published', label: 'Published' },
+                ]}
+              />
             </div>
           </div>
         </section>

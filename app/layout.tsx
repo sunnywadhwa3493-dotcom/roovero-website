@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import LayoutClient from './layout-client'
 
 export const metadata: Metadata = {
   title: 'Roovero — Content Operations for Indian SMBs',
@@ -34,7 +35,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <LayoutClient>{children}</LayoutClient>
+      </body>
     </html>
   )
 }

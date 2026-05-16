@@ -30,6 +30,7 @@ body {
   background: #ffffff;
   color: var(--ink);
   font-family: 'Figtree', system-ui, -apple-system, sans-serif;
+  cursor: none;
 }
 
 /* ─── Typography utilities ───────────────────────────────────── */

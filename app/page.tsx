@@ -737,11 +737,11 @@ export default function HomePage() {
               {/* Parabolic phones component */}
               <ParabolicPhones
                 phones={[
-                  { id: 'calendar', htmlPath: '/screenshots/01-calendar.html', label: 'Content Calendar' },
-                  { id: 'approvals', htmlPath: '/screenshots/02-approval.html', label: 'Approval Flow' },
-                  { id: 'edits', htmlPath: '/screenshots/03-edit.html', label: 'Edit Requests' },
-                  { id: 'analytics', htmlPath: '/screenshots/04-analytics.html', label: 'Analytics' },
-                  { id: 'published', htmlPath: '/screenshots/05-published.html', label: 'Published' },
+                  { id: 'calendar', image: '/images/phone-mockups/01-calendar.png', label: 'Content Calendar' },
+                  { id: 'approvals', image: '/images/phone-mockups/02-approval.png', label: 'Approval Flow' },
+                  { id: 'edits', image: '/images/phone-mockups/03-edit.png', label: 'Edit Requests' },
+                  { id: 'analytics', image: '/images/phone-mockups/04-analytics.png', label: 'Analytics' },
+                  { id: 'published', image: '/images/phone-mockups/05-published.png', label: 'Published' },
                 ]}
               />
             </div>

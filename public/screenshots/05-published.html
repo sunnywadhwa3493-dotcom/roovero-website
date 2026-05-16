@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Roovero — Published</title>
+<link rel="stylesheet" href="./styles.css">
+<style>
+  body { width: 375px; height: 812px; margin: 0; background: var(--off-white); overflow: hidden; }
+
+  /* Hero success block */
+  .hero {
+    margin: 8px 20px 0;
+    padding: 22px 20px 18px;
+    background:
+      radial-gradient(ellipse 200% 100% at 50% -10%, var(--amber-wash) 0%, transparent 70%),
+      var(--soft-white);
+    border-radius: 14px;
+    border: 1px solid var(--divider-soft);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 220px; height: 220px;
+    left: 50%; top: -130px; transform: translateX(-50%);
+    border-radius: 999px;
+    border: 1px solid var(--amber-soft);
+    opacity: 0.5;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 340px; height: 340px;
+    left: 50%; top: -200px; transform: translateX(-50%);
+    border-radius: 999px;
+    border: 1px solid var(--amber-soft);
+    opacity: 0.3;
+  }
+  .seal {
+    width: 60px; height: 60px;
+    margin: 0 auto;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--amber-mid), var(--amber));
+    box-shadow:
+      0 0 0 8px rgba(200,135,58,0.1),
+      0 0 0 16px rgba(200,135,58,0.05),
+      0 8px 22px -6px rgba(200,135,58,0.5);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    position: relative;
+    z-index: 1;
+  }
+  .hero h1 {
+    margin: 16px 0 0;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.025em;
+    position: relative;
+    line-height: 1.2;
+  }
+  .hero p {
+    margin: 6px 0 0;
+    font-size: 13.5px;
+    color: var(--ink-3);
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    position: relative;
+    line-height: 1.45;
+  }
+  .hero .badge-row {
+    margin-top: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px 5px 8px;
+    background: var(--success-soft);
+    color: var(--success);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    position: relative;
+  }
+  .hero .badge-row .pulse {
+    width: 7px; height: 7px;
+    border-radius: 999px;
+    background: var(--success);
+    position: relative;
+  }
+  .hero .badge-row .pulse::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 999px;
+    border: 1.5px solid var(--success);
+    opacity: 0.5;
+  }
+
+  /* Post preview */
+  .post-card {
+    margin: 14px 20px 0;
+    padding: 12px;
+    background: var(--pure);
+    border-radius: 12px;
+    box-shadow: var(--shadow-card);
+  }
+  .post-head { display: flex; align-items: center; gap: 9px; }
+  .post-avatar { width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, #6E4724, #2A1A0E); color: var(--amber-soft); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; letter-spacing: 0.04em; flex-shrink: 0; }
+  .post-name { font-size: 13px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+  .post-handle { font-size: 11px; color: var(--ink-3); margin-top: 1px; font-weight: 500; }
+  .post-media {
+    margin-top: 10px;
+    border-radius: 8px;
+    height: 130px;
+    background: radial-gradient(ellipse at 30% 30%, #B47535 0%, #2D1709 70%);
+    position: relative;
+    overflow: hidden;
+  }
+  .post-media .liquid {
+    position: absolute;
+    width: 75px; height: 95px;
+    left: 50%; bottom: 6%;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 14%, #2A1305 22%, #5B2E12 100%);
+    border-radius: 4px 4px 16px 16px;
+    box-shadow: inset 0 0 0 1.2px rgba(255,255,255,0.12);
+  }
+  .post-media .ig-corner {
+    position: absolute; top: 8px; right: 8px;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    color: white;
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 5px;
+    letter-spacing: 0.02em;
+  }
+  .post-caption {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--ink-2);
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+  }
+  .post-caption b { color: var(--ink); font-weight: 700; }
+  .post-caption .tag { color: var(--amber-deep); font-weight: 600; }
+
+  /* Stats grid */
+  .stats {
+    margin: 12px 20px 0;
+    background: var(--pure);
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+    box-shadow: var(--shadow-card);
+  }
+  .stats-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .stats-tit { font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-4); }
+  .stats-meta { font-size: 11px; color: var(--ink-3); font-weight: 600; }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px; }
+  .stat { text-align: left; }
+  .stat .v { font-size: 18px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .stat .v small { font-size: 11px; font-weight: 700; color: var(--ink-3); margin-left: 1px; }
+  .stat .l { font-size: 10.5px; color: var(--ink-3); font-weight: 600; margin-top: 2px; letter-spacing: 0.02em; }
+
+  /* Lifecycle hint */
+  .lifecycle {
+    margin: 12px 20px 0;
+    padding: 11px 14px;
+    background: var(--amber-wash);
+    border: 1px solid #EFD9A8;
+    border-radius: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .lifecycle .ic { width: 22px; height: 22px; border-radius: 6px; background: var(--amber-tint); color: var(--amber-deep); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .lifecycle .body { flex: 1; }
+  .lifecycle .t1 { font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.005em; }
+  .lifecycle .t2 { font-size: 11px; color: var(--ink-3); margin-top: 2px; font-weight: 500; line-height: 1.4; }
+
+  /* CTA stack */
+  .cta-stack {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 12px 20px 22px;
+    background: linear-gradient(180deg, rgba(250,246,238,0) 0%, var(--off-white) 30%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cta-stack .btn { width: 100%; }
+
+</style>
+</head>
+<body>
+
+<div class="screen">
+
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <div class="indicators">
+      <svg width="18" height="11" viewBox="0 0 18 11" fill="none"><path d="M9 8.4a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Zm0-3.4a4.6 4.6 0 0 1 3.25 1.35.6.6 0 0 0 .85-.85A5.8 5.8 0 0 0 9 3.8a5.8 5.8 0 0 0-4.1 1.7.6.6 0 0 0 .85.85A4.6 4.6 0 0 1 9 5Zm0-3.4a8 8 0 0 1 5.66 2.34.6.6 0 0 0 .85-.84A9.2 9.2 0 0 0 9 .2 9.2 9.2 0 0 0 2.49 3.1a.6.6 0 0 0 .85.84A8 8 0 0 1 9 1.6Z" fill="#1F1B16"/></svg>
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+        <rect x="0.5" y="6.5" width="2.2" height="4" rx="0.6" fill="#1F1B16"/>
+        <rect x="4.5" y="4.5" width="2.2" height="6" rx="0.6" fill="#1F1B16"/>
+        <rect x="8.5" y="2.5" width="2.2" height="8" rx="0.6" fill="#1F1B16"/>
+        <rect x="12.5" y="0.5" width="2.2" height="10" rx="0.6" fill="#1F1B16"/>
+      </svg>
+      <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+        <rect x="0.5" y="1" width="21" height="10" rx="2.4" stroke="#1F1B16" stroke-opacity="0.45" fill="none"/>
+        <rect x="22.5" y="4" width="1.5" height="4" rx="0.5" fill="#1F1B16" fill-opacity="0.45"/>
+        <rect x="2" y="2.5" width="17" height="7" rx="1.4" fill="#1F1B16"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="app-bar">
+    <div class="back" style="visibility: hidden;"></div>
+    <div class="titles" style="text-align: center;">
+      <div class="title">Published</div>
+      <div class="subtitle">Roast &amp; Ritual · Sat, 16 May</div>
+    </div>
+    <div class="actions">
+      <div class="icon-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="seal">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4 10-10"/></svg>
+    </div>
+    <h1>Post approved and saved</h1>
+    <p>Roast &amp; Ritual's Instagram post is<br>ready on this device.</p>
+    <div class="badge-row">
+      <span class="pulse"></span>
+      Live on @roastandritual · 12 min ago
+    </div>
+  </div>
+
+  <!-- Post preview -->
+  <div class="post-card">
+    <div class="post-head">
+      <div class="post-avatar">R&amp;R</div>
+      <div>
+        <div class="post-name">Roast &amp; Ritual</div>
+        <div class="post-handle">@roastandritual · Indiranagar</div>
+      </div>
+      <div style="margin-left: auto;" class="ai-badge">
+        <svg class="spark" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/></svg>
+        AI
+      </div>
+    </div>
+    <div class="post-media">
+      <div class="liquid"></div>
+      <div class="ig-corner">7:30 PM</div>
+    </div>
+    <div class="post-caption">
+      <b>Monsoon evenings call for slow sips.</b> Our new jaggery cold brew is now pouring at Roast &amp; Ritual. <span class="tag">#monsoonmenu</span>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stats-head">
+      <div class="stats-tit">Early performance</div>
+      <div class="stats-meta">First 30 min</div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="v">8,420</div>
+        <div class="l">Reach</div>
+      </div>
+      <div class="stat">
+        <div class="v">612</div>
+        <div class="l">Likes</div>
+      </div>
+      <div class="stat">
+        <div class="v">74</div>
+        <div class="l">Saves</div>
+      </div>
+      <div class="stat">
+        <div class="v">6.1<small>%</small></div>
+        <div class="l">Engagement</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lifecycle hint -->
+  <div class="lifecycle">
+    <div class="ic">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><rect x="4" y="17" width="16" height="4" rx="1.2"/></svg>
+    </div>
+    <div class="body">
+      <div class="t1">Saved to device · 1 photo, 1 caption</div>
+      <div class="t2">Cloud copy removed after download. Original media stays on @roastandritual.</div>
+    </div>
+  </div>
+
+  <!-- CTAs -->
+  <div class="cta-stack">
+    <button class="btn btn-primary btn-block">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg>
+      View analytics
+    </button>
+    <button class="btn btn-ghost btn-block" style="height: 40px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      Back to calendar
+    </button>
+  </div>
+
+</div>
+</body>
+</html>

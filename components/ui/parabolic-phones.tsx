@@ -6,6 +6,7 @@ interface ParabolicPhonesProps {
   phones: Array<{
     id: string
     image?: string
+    htmlPath?: string
     label?: string
   }>
 }
@@ -21,7 +22,7 @@ export function ParabolicPhones({ phones = [] }: ParabolicPhonesProps) {
   const spread = useTransform(scrollYProgress, [0.1, 0.6], [0, 1])
 
   // Use provided phones or default 5 placeholders
-  const displayPhones = phones.length > 0 ? phones : Array.from({ length: 5 }, (_, i) => ({ id: `phone-${i}`, image: undefined, label: `Screen ${i + 1}` }))
+  const displayPhones: ParabolicPhonesProps['phones'] = phones.length > 0 ? phones : Array.from({ length: 5 }, (_, i) => ({ id: `phone-${i}`, label: `Screen ${i + 1}` }))
 
   // Calculate position and rotation for each phone
   const getPhoneTransforms = (index: number, spreadValue: number) => {
@@ -97,12 +98,19 @@ export function ParabolicPhones({ phones = [] }: ParabolicPhonesProps) {
                   </div>
 
                   {/* Screen content */}
-                  <div className="pt-7 h-full bg-gradient-to-b from-stone to-white">
+                  <div className="pt-0 h-full bg-gradient-to-b from-stone to-white overflow-hidden">
                     {phone.image ? (
                       <img
                         src={phone.image}
                         alt={phone.label || `Phone ${i + 1}`}
                         className="w-full h-full object-cover"
+                      />
+                    ) : phone.htmlPath ? (
+                      <iframe
+                        src={phone.htmlPath}
+                        className="w-full h-full border-none"
+                        style={{ pointerEvents: 'none' }}
+                        sandbox="allow-same-origin"
                       />
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center px-4 pb-8">

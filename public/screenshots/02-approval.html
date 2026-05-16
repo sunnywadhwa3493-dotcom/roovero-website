@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Roovero — Review Post</title>
+<link rel="stylesheet" href="./styles.css">
+<style>
+  body { width: 375px; height: 812px; margin: 0; background: var(--off-white); overflow: hidden; }
+
+  .meta-row {
+    padding: 12px 20px 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .meta-left { display: flex; align-items: center; gap: 8px; }
+  .brand-tag { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+  .brand-tag .avatar {
+    width: 22px; height: 22px; border-radius: 999px;
+    background: linear-gradient(135deg, #6E4724, #2A1A0E);
+    color: var(--amber-soft); display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800; letter-spacing: 0.04em;
+  }
+
+  /* Media preview */
+  .preview {
+    margin: 14px 20px 0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--stone);
+    position: relative;
+    aspect-ratio: 1 / 1.05;
+    box-shadow: var(--shadow-2);
+  }
+  .preview .photo {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 25% 20%, rgba(245, 200, 130, 0.55), transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(60, 30, 12, 0.7), transparent 55%),
+      radial-gradient(circle at 50% 55%, #6B3D1C 0%, #341B0A 70%);
+  }
+  /* Glass + liquid suggestion */
+  .preview .glass {
+    position: absolute;
+    width: 175px; height: 230px;
+    left: 50%; bottom: 6%;
+    transform: translateX(-50%);
+    border-radius: 6px 6px 24px 24px / 6px 6px 60px 60px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 14%, transparent 18%, #2A1305 22%, #4C2410 55%, #6B3818 100%);
+    box-shadow:
+      inset 0 0 0 1.5px rgba(255,255,255,0.12),
+      inset 8px 0 18px rgba(0,0,0,0.4),
+      inset -8px 0 22px rgba(220,161,90,0.18);
+  }
+  .preview .glass::before {
+    content: '';
+    position: absolute;
+    top: 14%;
+    left: 14%;
+    width: 12px;
+    height: 65%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.1));
+    border-radius: 999px;
+    filter: blur(2px);
+  }
+  .preview .ice {
+    position: absolute;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.2);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
+    backdrop-filter: blur(2px);
+  }
+  .preview .ice.i1 { width: 22px; height: 16px; top: 22%; left: 42%; transform: rotate(12deg); }
+  .preview .ice.i2 { width: 18px; height: 18px; top: 18%; right: 33%; transform: rotate(-8deg); background: rgba(255,255,255,0.28); }
+  .preview .ice.i3 { width: 14px; height: 14px; top: 26%; left: 38%; transform: rotate(28deg); background: rgba(255,255,255,0.15); }
+  .preview .stem {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px; height: 8px;
+    background: rgba(20,10,4,0.6);
+    border-radius: 999px;
+    filter: blur(3px);
+  }
+  /* leaf garnish */
+  .preview .leaf {
+    position: absolute;
+    top: 14%; right: 30%;
+    width: 38px; height: 22px;
+    background: linear-gradient(135deg, #557A35, #2F4A20);
+    border-radius: 0 100% 0 100%;
+    transform: rotate(35deg);
+    box-shadow: inset 0 -2px 6px rgba(0,0,0,0.3);
+  }
+
+  .preview .tl-chip {
+    position: absolute; top: 10px; left: 10px;
+    padding: 5px 9px 5px 7px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(8px);
+    border-radius: 999px;
+    color: white;
+    font-size: 10.5px;
+    font-weight: 700;
+    display: flex; align-items: center; gap: 5px;
+    letter-spacing: 0.02em;
+  }
+  .preview .tr-chip {
+    position: absolute; top: 10px; right: 10px;
+    padding: 5px 8px;
+    background: rgba(255,255,255,0.96);
+    border-radius: 8px;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+  .preview .bl-meta {
+    position: absolute; bottom: 10px; left: 10px;
+    color: white;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    display: flex; gap: 8px; align-items: center;
+  }
+
+  /* Caption */
+  .caption-block { margin: 14px 20px 0; }
+  .caption-label { font-size: 10.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 6px; }
+  .caption-text { font-size: 13.5px; line-height: 1.45; color: var(--ink); letter-spacing: -0.005em; }
+  .caption-text .tag { color: var(--amber-deep); font-weight: 600; }
+
+  .meta-line { margin: 10px 20px 0; display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--ink-3); font-weight: 500; flex-wrap: wrap; }
+  .meta-line .dot-sep { width: 2.5px; height: 2.5px; border-radius: 999px; background: var(--ink-5); }
+
+  /* Predictive insight card */
+  .insight {
+    margin: 12px 20px 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--soft-white);
+    border: 1px solid var(--divider-soft);
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .insight .col { flex: 1; }
+  .insight .lab { font-size: 10.5px; color: var(--ink-4); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  .insight .val { font-size: 18px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; margin-top: 3px; font-variant-numeric: tabular-nums; }
+  .insight .val small { font-size: 11px; font-weight: 600; color: var(--success); letter-spacing: 0; margin-left: 4px; }
+  .insight .vsep { width: 1px; background: var(--divider); }
+  .insight .hook-val { font-size: 13.5px; font-weight: 700; color: var(--ink); margin-top: 3px; }
+
+  /* Action bar */
+  .action-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 12px 20px 22px;
+    background: linear-gradient(180deg, rgba(250,246,238,0) 0%, var(--off-white) 30%);
+  }
+  .action-row1 { display: flex; gap: 8px; margin-bottom: 8px; }
+  .action-row1 .btn { flex: 1; }
+  .action-row2 { display: flex; gap: 8px; }
+  .action-row2 .btn { flex: 1; }
+  .reject-row { display: flex; justify-content: center; margin-top: 6px; }
+  .reject-row .btn { padding: 6px 14px; height: 32px; font-size: 12.5px; font-weight: 600; }
+
+  .status-line { display: flex; align-items: center; gap: 8px; padding: 12px 20px 0; }
+</style>
+</head>
+<body>
+
+<div class="screen">
+
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <div class="indicators">
+      <svg width="18" height="11" viewBox="0 0 18 11" fill="none"><path d="M9 8.4a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Zm0-3.4a4.6 4.6 0 0 1 3.25 1.35.6.6 0 0 0 .85-.85A5.8 5.8 0 0 0 9 3.8a5.8 5.8 0 0 0-4.1 1.7.6.6 0 0 0 .85.85A4.6 4.6 0 0 1 9 5Zm0-3.4a8 8 0 0 1 5.66 2.34.6.6 0 0 0 .85-.84A9.2 9.2 0 0 0 9 .2 9.2 9.2 0 0 0 2.49 3.1a.6.6 0 0 0 .85.84A8 8 0 0 1 9 1.6Z" fill="#1F1B16"/></svg>
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+        <rect x="0.5" y="6.5" width="2.2" height="4" rx="0.6" fill="#1F1B16"/>
+        <rect x="4.5" y="4.5" width="2.2" height="6" rx="0.6" fill="#1F1B16"/>
+        <rect x="8.5" y="2.5" width="2.2" height="8" rx="0.6" fill="#1F1B16"/>
+        <rect x="12.5" y="0.5" width="2.2" height="10" rx="0.6" fill="#1F1B16"/>
+      </svg>
+      <svg width="26" height="12" viewBox="0 0 26 12" fill="none">
+        <rect x="0.5" y="1" width="21" height="10" rx="2.4" stroke="#1F1B16" stroke-opacity="0.45" fill="none"/>
+        <rect x="22.5" y="4" width="1.5" height="4" rx="0.5" fill="#1F1B16" fill-opacity="0.45"/>
+        <rect x="2" y="2.5" width="17" height="7" rx="1.4" fill="#1F1B16"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="app-bar">
+    <div class="back">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    </div>
+    <div class="titles">
+      <div class="title">Review Post</div>
+      <div class="subtitle">Roast &amp; Ritual · 2 of 5</div>
+    </div>
+    <div class="actions">
+      <div class="icon-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status line -->
+  <div class="status-line">
+    <span class="chip chip-amber"><span class="dot"></span>Ready for approval</span>
+    <span class="ai-badge">
+      <svg class="spark" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/></svg>
+      AI generated
+    </span>
+  </div>
+
+  <!-- Media preview -->
+  <div class="preview">
+    <div class="photo"></div>
+    <div class="leaf"></div>
+    <div class="glass">
+      <div class="ice i1"></div>
+      <div class="ice i2"></div>
+      <div class="ice i3"></div>
+    </div>
+    <div class="stem"></div>
+    <div class="tl-chip">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+      Instagram Post
+    </div>
+    <div class="tr-chip">1 / 3</div>
+    <div class="bl-meta">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      Today · 7:30 PM
+    </div>
+  </div>
+
+  <!-- Caption -->
+  <div class="caption-block">
+    <div class="caption-label">Caption</div>
+    <div class="caption-text">
+      Monsoon evenings call for slow sips. Our new <span class="tag">jaggery cold brew</span> is now pouring at Roast &amp; Ritual — smoked sugar, a single origin from Coorg, and a long, slow pour. <span class="tag">#monsoonmenu</span> <span class="tag">#bangalorecafe</span>
+    </div>
+  </div>
+
+  <!-- Predictive insight -->
+  <div class="insight">
+    <div class="col">
+      <div class="lab">Est. engagement</div>
+      <div class="val">4.8%<small>↑ 0.6</small></div>
+    </div>
+    <div class="vsep"></div>
+    <div class="col">
+      <div class="lab">Best hook</div>
+      <div class="hook-val">Seasonal menu</div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="action-bar">
+    <div class="action-row1">
+      <button class="btn btn-primary btn-block">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4 10-10"/></svg>
+        Approve &amp; schedule
+      </button>
+    </div>
+    <div class="action-row2">
+      <button class="btn btn-secondary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+        Quick Edit
+      </button>
+      <button class="btn btn-secondary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+        Regenerate
+      </button>
+    </div>
+    <div class="reject-row">
+      <button class="btn btn-danger-ghost btn-sm">Reject post</button>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

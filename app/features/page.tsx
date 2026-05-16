@@ -1,6 +1,9 @@
+'use client'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import AnimateIn from '@/components/AnimateIn'
+import { WordReveal } from '@/components/ui/word-reveal'
+import { SpotlightCard } from '@/components/ui/spotlight-card'
 import Link from 'next/link'
 
 const features = [
@@ -92,20 +95,23 @@ export default function FeaturesPage() {
         <section className="bg-white py-24 px-6">
           <div className="max-w-content mx-auto">
             <div className="max-w-2xl">
-              <div className="flex items-center gap-3 mb-8">
-                <span className="w-8 h-px bg-amber" />
-                <span className="text-xs tracking-widest text-smoke uppercase font-sans">Features</span>
-              </div>
-              <h1
+              <AnimateIn direction="fade">
+                <div className="flex items-center gap-3 mb-8">
+                  <span className="w-8 h-px bg-amber" />
+                  <span className="text-xs tracking-widest text-smoke uppercase font-sans">Features</span>
+                </div>
+              </AnimateIn>
+              <WordReveal
+                text="The content operating system for Indian SMBs."
                 className="font-serif italic text-ink mb-6"
                 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', letterSpacing: '-0.03em' }}
-              >
-                The content operating system for Indian SMBs.
-              </h1>
-              <p className="text-smoke font-sans text-lg leading-relaxed">
-                Generation, approval, edits, publishing, and analytics — in one system, governed
-                by a clear plan structure. No agencies, no scattered tools, no last-minute posts.
-              </p>
+              />
+              <AnimateIn delay={200}>
+                <p className="text-smoke font-sans text-lg leading-relaxed">
+                  Generation, approval, edits, publishing, and analytics — in one system, governed
+                  by a clear plan structure. No agencies, no scattered tools, no last-minute posts.
+                </p>
+              </AnimateIn>
             </div>
           </div>
         </section>
@@ -118,32 +124,33 @@ export default function FeaturesPage() {
                   key={feature.id}
                   delay={(i % 2) * 100}
                   className={[
-                    'bg-white p-10',
                     i % 2 === 0 && i < features.length - 1 ? 'md:border-r border-mist' : '',
                     i < features.length - 2 ? 'border-b border-mist' : '',
                     i === features.length - 1 && features.length % 2 !== 0 ? 'md:col-span-2' : '',
                   ].filter(Boolean).join(' ')}
                 >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-8 h-8 border border-amber/30 flex items-center justify-center flex-shrink-0">
-                      <span className="text-[11px] text-amber font-sans tabular-nums">{feature.id}</span>
+                  <SpotlightCard className="bg-white p-10 h-full">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-8 h-8 border border-amber/30 flex items-center justify-center flex-shrink-0">
+                        <span className="text-[11px] text-amber font-sans tabular-nums">{feature.id}</span>
+                      </div>
+                      <span className="text-xs tracking-widest text-amber uppercase font-sans">
+                        {feature.category}
+                      </span>
                     </div>
-                    <span className="text-xs tracking-widest text-amber uppercase font-sans">
-                      {feature.category}
-                    </span>
-                  </div>
-                  <h2 className="text-xl font-serif italic text-ink mb-3">{feature.title}</h2>
-                  <p className="text-smoke text-sm font-sans leading-relaxed mb-6">
-                    {feature.description}
-                  </p>
-                  <ul className="space-y-2">
-                    {feature.points.map((point) => (
-                      <li key={point} className="flex items-start gap-2.5 text-sm text-ink font-sans">
-                        <span className="text-amber mt-0.5 flex-shrink-0">–</span>
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
+                    <h2 className="text-xl font-serif italic text-ink mb-3">{feature.title}</h2>
+                    <p className="text-smoke text-sm font-sans leading-relaxed mb-6">
+                      {feature.description}
+                    </p>
+                    <ul className="space-y-2">
+                      {feature.points.map((point) => (
+                        <li key={point} className="flex items-start gap-2.5 text-sm text-ink font-sans">
+                          <span className="text-amber mt-0.5 flex-shrink-0">–</span>
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  </SpotlightCard>
                 </AnimateIn>
               ))}
             </div>
@@ -153,13 +160,12 @@ export default function FeaturesPage() {
         <section className="bg-white py-24 px-6">
           <div className="max-w-content mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-end">
-              <div>
-                <h2
+              <AnimateIn>
+                <WordReveal
+                  text="Everything unlocks on a clear ladder."
                   className="font-serif italic text-ink mb-5"
                   style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', letterSpacing: '-0.02em' }}
-                >
-                  Everything unlocks on a clear ladder.
-                </h2>
+                />
                 <p className="text-smoke font-sans text-base leading-relaxed mb-8">
                   Free proves the loop. Starter establishes daily output. Core is where publishing
                   and analytics become operational. Growth and Studio add more video, engagement
@@ -171,26 +177,28 @@ export default function FeaturesPage() {
                 >
                   Compare plans →
                 </Link>
-              </div>
-              <div className="border border-mist p-8 bg-stone">
-                <div className="space-y-3 text-sm font-sans">
-                  {[
-                    { plan: 'Free', detail: '8 statics · no Meta connect · watermarked' },
-                    { plan: 'Starter ₹1,999', detail: '30 posts · 1 reel · 10 edits · WhatsApp share' },
-                    { plan: 'Core ₹4,999', detail: 'Meta publish · analytics · 2 reels · 7 carousels' },
-                    { plan: 'Growth ₹8,999', detail: '5 reels · 3 competitor slots · 50 AI replies' },
-                    { plan: 'Studio ₹14,999', detail: '60 posts · 8 reels · 200 AI replies · priority queue' },
-                  ].map((row, i) => (
-                    <div
-                      key={row.plan}
-                      className={`flex items-start justify-between gap-4 py-3 ${i < 4 ? 'border-b border-mist' : ''}`}
-                    >
-                      <span className="text-ink font-medium">{row.plan}</span>
-                      <span className="text-smoke text-right">{row.detail}</span>
-                    </div>
-                  ))}
+              </AnimateIn>
+              <AnimateIn delay={120}>
+                <div className="border border-mist p-8 bg-stone">
+                  <div className="space-y-3 text-sm font-sans">
+                    {[
+                      { plan: 'Free', detail: '8 statics · no Meta connect · watermarked' },
+                      { plan: 'Starter ₹1,999', detail: '30 posts · 1 reel · 10 edits · WhatsApp share' },
+                      { plan: 'Core ₹4,999', detail: 'Meta publish · analytics · 2 reels · 7 carousels' },
+                      { plan: 'Growth ₹8,999', detail: '5 reels · 3 competitor slots · 50 AI replies' },
+                      { plan: 'Studio ₹14,999', detail: '60 posts · 8 reels · 200 AI replies · priority queue' },
+                    ].map((row, i) => (
+                      <div
+                        key={row.plan}
+                        className={`flex items-start justify-between gap-4 py-3 ${i < 4 ? 'border-b border-mist' : ''}`}
+                      >
+                        <span className="text-ink font-medium">{row.plan}</span>
+                        <span className="text-smoke text-right">{row.detail}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </AnimateIn>
             </div>
           </div>
         </section>

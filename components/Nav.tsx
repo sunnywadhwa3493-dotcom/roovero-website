@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface NavProps {
   heroIsDark?: boolean
@@ -19,15 +20,50 @@ export default function Nav({ heroIsDark = false }: NavProps) {
 
   const isTransparent = heroIsDark && !scrolled
 
+  const hamburgerVariants = [
+    { rotate: 45, y: 8, opacity: 1 },
+    { rotate: 0, y: 0, opacity: 0 },
+    { rotate: -45, y: -8, opacity: 1 },
+  ]
+
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isTransparent
-          ? 'bg-gradient-to-b from-black/45 via-black/20 to-transparent'
-          : 'bg-white/96 backdrop-blur-sm border-b border-mist'
-      }`}
+    <motion.nav
+      className="fixed top-0 left-0 right-0 z-50"
+      animate={isTransparent ? 'transparent' : 'solid'}
+      variants={{
+        transparent: { backgroundColor: 'transparent' },
+        solid: { backgroundColor: 'rgba(255,255,255,0.96)' },
+      }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="max-w-content mx-auto px-6 h-16 flex items-center justify-between">
+      {/* Gradient overlay for dark hero — fades out on scroll */}
+      <AnimatePresence>
+        {isTransparent && (
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-transparent pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Bottom border for solid state */}
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 h-px bg-mist"
+        animate={{ opacity: isTransparent ? 0 : 1 }}
+        transition={{ duration: 0.35 }}
+      />
+
+      {/* Backdrop blur for solid state */}
+      <motion.div
+        className="absolute inset-0 backdrop-blur-sm pointer-events-none"
+        animate={{ opacity: isTransparent ? 0 : 1 }}
+        transition={{ duration: 0.35 }}
+      />
+
+      <div className="relative max-w-content mx-auto px-6 h-16 flex items-center justify-between">
 
         {/* Wordmark */}
         <Link
@@ -92,47 +128,57 @@ export default function Nav({ heroIsDark = false }: NavProps) {
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
-          {[
-            open ? 'rotate-45 translate-y-2' : '',
-            open ? 'opacity-0' : '',
-            open ? '-rotate-45 -translate-y-2' : '',
-          ].map((cls, i) => (
-            <span
+          {hamburgerVariants.map((variant, i) => (
+            <motion.span
               key={i}
-              className={`block w-6 h-0.5 transition-all duration-200 ${cls} ${
-                isTransparent ? 'bg-white' : 'bg-ink'
-              }`}
+              className={`block w-6 h-0.5 ${isTransparent ? 'bg-white' : 'bg-ink'}`}
+              animate={open ? { rotate: variant.rotate, y: variant.y, opacity: variant.opacity } : { rotate: 0, y: 0, opacity: 1 }}
+              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] as const }}
             />
           ))}
         </button>
       </div>
 
       {/* Mobile menu */}
-      {open && (
-        <div className="md:hidden bg-white border-t border-stone px-6 py-6 flex flex-col gap-5">
-          {['Features', 'Pricing', 'About'].map((label) => (
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="md:hidden bg-white border-t border-stone px-6 py-6 flex flex-col gap-5 overflow-hidden relative"
+            initial={{ opacity: 0, height: 0, y: -8 }}
+            animate={{ opacity: 1, height: 'auto', y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -8 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] as const }}
+          >
+            {['Features', 'Pricing', 'About'].map((label, i) => (
+              <motion.div
+                key={label}
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] as const }}
+              >
+                <Link
+                  href={`/${label.toLowerCase()}`}
+                  className="text-lg font-serif italic text-ink"
+                  onClick={() => setOpen(false)}
+                >
+                  {label}
+                </Link>
+              </motion.div>
+            ))}
+            <hr className="border-stone" />
+            <Link href="/login" className="text-base text-smoke" onClick={() => setOpen(false)}>
+              Sign in
+            </Link>
             <Link
-              key={label}
-              href={`/${label.toLowerCase()}`}
-              className="text-lg font-serif italic text-ink"
+              href="/pricing"
+              className="text-base bg-ink text-white px-5 py-3 text-center font-serif italic hover:bg-amber transition-colors"
               onClick={() => setOpen(false)}
             >
-              {label}
+              Get started →
             </Link>
-          ))}
-          <hr className="border-stone" />
-          <Link href="/login" className="text-base text-smoke" onClick={() => setOpen(false)}>
-            Sign in
-          </Link>
-          <Link
-            href="/pricing"
-            className="text-base bg-ink text-white px-5 py-3 text-center font-serif italic hover:bg-amber transition-colors"
-            onClick={() => setOpen(false)}
-          >
-            Get started →
-          </Link>
-        </div>
-      )}
-    </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   )
 }

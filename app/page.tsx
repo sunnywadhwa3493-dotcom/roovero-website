@@ -329,7 +329,11 @@ export default function HomePage() {
 
         {/* ══════════════════════════════ 2. MARQUEE ══ */}
         <section className="bg-amber overflow-hidden py-3.5">
-          <div className="marquee-track select-none">
+          <motion.div
+            className="flex select-none w-max"
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{ repeat: Infinity, ease: 'linear', duration: 30 }}
+          >
             {Array.from({ length: 2 }).map((_, i) => (
               <div key={i} className="flex items-center gap-0">
                 {[
@@ -346,7 +350,7 @@ export default function HomePage() {
                 ))}
               </div>
             ))}
-          </div>
+          </motion.div>
         </section>
 
         {/* ══════════════════════════════ 3. BEFORE / AFTER ══ */}
